@@ -24,9 +24,3 @@ npm run test
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-# Flask Vue JWT - reference
-https://stackabuse.com/single-page-apps-with-vue-js-and-flask-jwt-authentication/
