@@ -31,10 +31,10 @@
                 <!-- <i class="fa fa-question-circle"></i> -->
                 • Help
                 </router-link>
-                <router-link class="tx-12 gray mr-2" :to="{ name: 'Register'}">
+                <!-- <router-link class="tx-12 gray mr-2" :to="{ name: 'Register'}"> -->
                 <!-- <i class="fa fa-user"></i> -->
-                • Register
-                </router-link>
+                <!-- • Register -->
+                <!-- </router-link> -->
             <b-button size="sm" class="mr-1 float-right" variant="primary" @click="authenticate">Login</b-button>
           </b-card>
            <router-link class="tx-10 gray float-right mt-2" :to="{ name: 'Terms'}">

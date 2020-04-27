@@ -27,17 +27,17 @@ export const router = new Router({
       name: 'Login',
       component: Login,
     },
-    {
-      path: '/register',
-      name: 'Register',
-      component: Register,
-    }
+    // {
+    //   path: '/register',
+    //   name: 'Register',
+    //   component: Register,
+    // }
   ]
 })
 
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['/login', '/register', '/terms', '/help'];
+  const publicPages = ['/login', '/terms', '/help'];
   const authRequired = !publicPages.includes(to.path);
   if (authRequired && !store.getters.isAuthenticated) {
       return next('/login')
