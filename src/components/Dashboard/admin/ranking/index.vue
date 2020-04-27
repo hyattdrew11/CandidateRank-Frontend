@@ -51,6 +51,9 @@
 </template>
 
 <script>
+const API_URL = process.env.VUE_APP_API_URL
+
+
 export default {
 
   name: 'index',
@@ -123,7 +126,7 @@ export default {
         },
         getCandidates(year) {
           let org = this.user.Organization
-          window.axios.get('/api/candidate/all/'+org+'/'+year)
+          window.axios.get(API_URL+'/candidate/all/'+org+'/'+year)
           .then(({ data }) => {
             console.log(data[0])
             let x 

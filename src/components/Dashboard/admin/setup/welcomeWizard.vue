@@ -179,6 +179,7 @@
 // USE JS DATE FUNCTION TO GET ARRAY OF YEARS
 const currentYear = (new Date()).getFullYear();
 const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
+const API_URL = process.env.VUE_APP_API_URL
 
 export default {
 	name: 'welcomeWizard',
@@ -279,23 +280,24 @@ export default {
         this.selected = 'first'
           let x
           let terms = this.organization.terms
-          for(x in terms) {
-            if(terms[x].year == this.year) {
-              let c = confirm("You already have started setup for this year. Would you like to edit this year's setup?")
-              if(c) {
-                this.selected = 'second'
-              }
-              else {
-                 // window.location.reload()
-                 this.selected = null
-              }
-            }
-            else {
-              // axios call to create a new term in an organization
-                // dates is an array in organization terms addDate(term)
-              this.selected = 'first'
-            }
-          }
+          this.selected = 'first'
+          // for(x in terms) {
+          //   if(terms[x].year == this.year) {
+          //     let c = confirm("You already have started setup for this year. Would you like to edit this year's setup?")
+          //     if(c) {
+          //       this.selected = 'second'
+          //     }
+          //     else {
+          //        // window.location.reload()
+          //        this.selected = null
+          //     }
+          //   }
+          //   else {
+          //     // axios call to create a new term in an organization
+          //       // dates is an array in organization terms addDate(term)
+          //     this.selected = 'first'
+          //   }
+          // }
       },
       priorYear() {
         this.selected = 'second'
@@ -330,7 +332,7 @@ export default {
           // }
             this.organization.terms.push(term)
             // AXIOS UPDATE THE ORGANIZATION VIA API
-          window.axios.post('/api/organization/update/terms/'+this.organization.name, this.organization)
+          window.axios.post(API_URL+'/organization/update/terms/'+this.organization.name, this.organization)
             .then(({data}) => { 
               alert("Term setup saved successfully")
             })
@@ -399,7 +401,7 @@ export default {
        getCandidates(year) {
           this.$Progress.start()
           let org = this.user.Organization
-          window.axios.get('/api/candidate/all/'+org+'/'+year)
+          window.axios.get(API_URL+'/candidate/all/'+org+'/'+year)
           .then(({ data }) => {
             let x 
             for(x in data) {

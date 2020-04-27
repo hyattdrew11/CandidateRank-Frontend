@@ -28,6 +28,7 @@
 
 <script>
 const currentYear = (new Date()).getFullYear();
+const API_URL = process.env.VUE_APP_API_URL
 
 import PreInterviewSurveys from './PreInterviewSurveys.vue';
 import PreInterviewRankings from './PreInterviewRankings.vue';
@@ -70,7 +71,7 @@ export default {
       loadDashboard() {
         this.$Progress.start()
         let org = this.user.Organization
-        window.axios.get('/api/dashboard/faculty/'+org+'/'+currentYear)
+        window.axios.get(API_URL+'/dashboard/faculty/'+org+'/'+currentYear)
           .then(({ data }) => {
             this.$Progress.finish()
             this.organization = data.organization

@@ -60,6 +60,8 @@
 <script>
 const currentYear = (new Date()).getFullYear();
 
+const API_URL = process.env.VUE_APP_API_URL
+
 import Setup from './setup/index.vue';
 import Ranking from './ranking/index.vue';
 import Schedule from './schedule/index.vue';
@@ -96,7 +98,7 @@ export default {
       loadDashboard() {
         this.$Progress.start()
         let org = this.user.Organization
-        window.axios.get('/api/dashboard/admin/'+org+'/'+currentYear)
+        window.axios.get( API_URL+'/dashboard/admin/'+org+'/'+currentYear)
           .then(({ data }) => { 
               this.organization = data.organization
               this.candidates   = data.candidates

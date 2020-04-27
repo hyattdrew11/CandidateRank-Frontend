@@ -119,6 +119,7 @@
 <script>
 import axios from 'axios'
 window.axios = require('axios');
+const API_URL = process.env.VUE_APP_API_URL
 
 
 export default {
@@ -191,7 +192,7 @@ export default {
         this.showSurvey = false
       },
       getCandidate(aamcid) { 
-        window.axios.get('/api/candidate/'+aamcid)
+        window.axios.get(API_URL+'/candidate/'+aamcid)
           .then(({ data }) => {
               this.candidate = data
           })

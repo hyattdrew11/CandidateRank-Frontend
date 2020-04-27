@@ -2,10 +2,11 @@
   <div>
     <b-navbar id="main-nav" toggleable="lg" type="dark" variant="none">
         <b-navbar-brand>
+          <img height="45" class="" src="cr-logo.png" />
        <!--    <img 
           height="30" 
           src="https://communications.tulane.edu/sites/g/files/rdw811/f/pictures/%C6%92%C6%92TUshield_1c_BLK.png" /> -->
-          Candidate Rank 
+          <!-- Candidate Rank  -->
           <span v-if="user">• {{ user.role }}</span>
         </b-navbar-brand>
 

@@ -136,6 +136,7 @@
 // USE JS DATE FUNCTION TO GET ARRAY OF YEARS
 const currentYear = (new Date()).getFullYear();
 const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step))
+const API_URL = process.env.VUE_APP_API_URL
 
 export default {
 	name: 'surveyManagement',
@@ -216,7 +217,7 @@ export default {
           name          : this.surveyName,
           questions     : this.questions
         }
-      window.axios.post('/api/survey/add', input)
+      window.axios.post(API_URL+'/survey/add', input)
         .then(({data}) => {
           this.surveys.push(data)
         })

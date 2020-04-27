@@ -71,6 +71,7 @@
 
 <script>
 const currentYear = (new Date()).getFullYear();
+const API_URL = process.env.VUE_APP_API_URL
 
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
@@ -172,7 +173,7 @@ export default {
               }
             }
             // axios post to api 
-            window.axios.post('/api/candidate/add/'+this.organization.name,  this.stagedCandidates)
+            window.axios.post(API_URL+'/candidate/add/'+this.organization.name,  this.stagedCandidates)
             .then(({data}) => { 
               alert("Candidates Imported Successfully")
               this.results = data
