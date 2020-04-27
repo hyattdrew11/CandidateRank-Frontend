@@ -1,1 +1,1 @@
-git pull origin master && cd dist && cp js /var/www/html && cp css /var/www/html && cp index.html /var/www/html/index.html
+git pull origin master && cd dist && cp js -R /var/www/html && cp css -R /var/www/html && cp index.html /var/www/html/index.html && cp cr-logo.svg /var/www/html/cr-logo.svg
