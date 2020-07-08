@@ -11,7 +11,7 @@ import './assets/sass/scheduler.scss'
 import moment from 'moment'
 import VueProgressBar from 'vue-progressbar'
 import draggable from "vuedraggable";
-
+import axios from 'axios';
 import "ag-grid-enterprise";
 import {LicenseManager} from "ag-grid-enterprise";
 LicenseManager.setLicenseKey("Evaluation_License-_Not_For_Production_Valid_Until_23_July_2019__MTU2MzgzNjQwMDAwMA==870f7edafb7c5f1ab4ea3e323377ea2a");
@@ -19,6 +19,7 @@ LicenseManager.setLicenseKey("Evaluation_License-_Not_For_Production_Valid_Until
 Vue.config.productionTip = false;
 
 Vue.use(BootstrapVue);
+Vue.use(axios);
 Vue.use(moment);
 Vue.use(draggable);
 Vue.use(VueProgressBar, {
@@ -26,7 +27,6 @@ Vue.use(VueProgressBar, {
   failedColor: 'red',
   height: '3px'
 })
-// Vue.use(NowUiKit);
 
 const app = new Vue({
   el: '#app',
