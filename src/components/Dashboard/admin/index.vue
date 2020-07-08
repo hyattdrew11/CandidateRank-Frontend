@@ -1,58 +1,75 @@
 <template>
   <div id="admin-dashboard" class="container-fluid">
-    <b-row no-gutters>
-      <div id="admin-menu-container">
-        <div id="admin-menu">
-          <ul id="admin-menu-list">
-            <li v-for="(x, index) in tabs" :class="{active : x == tab }" @click="changeTab(x)">{{ x }}</li>
-          </ul>
+    <i id="loader" v-if="loading" class="fa fa-spinner fa-pulse fa-3x fa-fw text-info" aria-hidden="true"></i>
+    <div :class="{fade : loading }">
+      <!-- <span id="currentTerm-banner">Currently Working in {{ currentTerm.year }}</span> -->
+      <b-row  no-gutters>
+        <div id="admin-menu-container">
+          <div id="admin-menu">
+            <ul id="admin-menu-list">
+              <li v-for="(x, index) in tabs" :class="{active : x == tab }" @click="changeTab(x)">{{ x }}</li>
+            </ul>
+          </div>
         </div>
-      </div>
+        <!-- <SmartSync :tasks="tasks" /> -->
+        <div id="admin-tabs-container">
+          <Setup            
+            :class="{'d-none' : tab != 'Setup'}"
+            :organization="organization" 
+            :user="user" 
+            :candidates="candidates" 
+            :surveys="surveys" 
+            :faculty="faculty"
+            :files="files"
+            @loadCandidates="loadCandidates"
+            @changeTerm="changeTerm"
 
-      <div id="admin-tabs-container">
-        <Setup            
-          :class="{'d-none' : tab != 'Setup'}"
-          :organization="organization" 
-          :user="user" 
-          :candidates="candidates" 
-          :surveys="surveys" 
-          :faculty="faculty" 
-        />
-        <Ranking
-          :class="{'d-none' : tab != 'Ranking'}"
-          :organization="organization"
-          :user="user"
-          :candidates="candidates"
-          :surveys="surveys"
-          :faculty="faculty" 
-        />
-        <Schedule
-          :class="{'d-none' : tab != 'Schedule'}"
-          :organization="organization"
-          :user="user"
-          :candidates="candidates"
-          :surveys="surveys"
-          :faculty="faculty" 
-        />
-        <PreInterview
-          :class="{'d-none' : tab != 'Pre-Interview'}"
-          :organization="organization"
-          :user="user"
-          :candidates="candidates"
-          :surveys="surveys"
-          :faculty="faculty" 
-        />
-        <InterviewProcess
-          :class="{'d-none' : tab != 'Interview Process'}"
-          :organization="organization"
-          :user="user"
-          :candidates="candidates"
-          :surveys="surveys"
-          :faculty="faculty" 
-        />
-      </div>
-         
-    </b-row>
+          />
+          <PreInterview
+            :class="{'d-none' : tab != 'Pre-Interview'}"
+            :active="tab == 'Pre-Interview'"
+            :organization="organization"
+            :user="user"
+            :candidates="candidates"
+            :surveys="surveys"
+            :faculty="faculty"
+            :currentTerm="currentTerm"
+          />
+            <InterviewProcess
+            :class="{'d-none' : tab != 'Interview Process'}"
+             :active="tab == 'Interview Process'"
+            :organization="organization"
+            :user="user"
+            :candidates="candidates"
+            :surveys="surveys"
+            :faculty="faculty" 
+            :currentTerm="currentTerm"
+          />
+          <Schedule
+            :class="{'d-none' : tab != 'Schedule'}"
+            :organization="organization"
+            :user="user"
+            :candidates="candidates"
+            :surveys="surveys"
+            :faculty="faculty" 
+            :currentTerm="currentTerm"
+          />
+          <Ranking
+            :class="{'d-none' : tab != 'Ranking'}"
+            :organization="organization"
+            :user="user"
+            :candidates="candidates"
+            :surveys="surveys"
+            :faculty="faculty" 
+            @loadCandidates="loadCandidates"
+            :currentTerm="currentTerm"
+          />
+
+
+        </div>
+           
+      </b-row>
+    </div>
 
   </div>
 </template>
@@ -62,9 +79,10 @@ const currentYear = (new Date()).getFullYear();
 
 const API_URL = process.env.VUE_APP_API_URL
 
+import SmartSync from './SmartSync.vue';
 import Setup from './setup/index.vue';
 import Ranking from './ranking/index.vue';
-import Schedule from './schedule/index.vue';
+import Schedule from './schedule/Scheduler.vue';
 import PreInterview from './pre-interview/index.vue';
 import InterviewProcess from './interview-process/index.vue';
 
@@ -73,18 +91,23 @@ export default {
   props: ['user'],
 	data() {
     	return {
+        loading: true,
         tab:  'Setup',
-        tabs: ['Setup', 'Ranking','Schedule','Pre-Interview','Interview Process'],
+        tabs: ['Setup', 'Pre-Interview', 'Interview Process',  'Schedule', 'Ranking'],
         organization: {
           name: null,
           terms: []
         },
-        candidates: null,
+        currentTerm: null,
+        candidates: [],
+        tasks: [],
         surveys: null,
         faculty: null,
+        files:[]
       }
   	},
   	components: {
+      SmartSync,
       Setup,
       Ranking,
       Schedule,
@@ -93,22 +116,91 @@ export default {
     },
     mounted() {
       this.loadDashboard()
+      // this.checkTasks()
+      // setInterval(function () { this.checkTasks() }.bind(this), 30000);
     },
   	methods: {
+       changeTerm: function(term) {
+        this.currentTerm = term
+      },
+      checkTasks() {
+        console.log("CHECK TASKS")
+        const org = this.user.Organization
+        const token = this.$store.state.jwt.token.token 
+        const authHeader = { headers: { "Authorization" : 'Bearer: ' + token } }
+        window.axios.get( API_URL+'/dashboard/admin/'+org+'/tasks', authHeader)
+          .then(({ data }) => { 
+            console.log(data)
+            this.tasks = data.tasks
+          })
+           .catch(error => {
+            const auth = error.response.data.authenticated
+            if(!auth) {
+              alert("Please login.")
+              window.sessionStorage.clear()
+              window.location.replace("/");
+            }
+        })
+      },
       loadDashboard() {
-        this.$Progress.start()
-        let org = this.user.Organization
-        window.axios.get( API_URL+'/dashboard/admin/'+org+'/'+currentYear)
+        const org = this.user.Organization
+        const token = this.$store.state.jwt.token.token 
+        const authHeader = { headers: { "Authorization" : 'Bearer: ' + token } }
+
+        window.axios.get( API_URL+'/dashboard/admin/'+org, authHeader)
           .then(({ data }) => { 
               this.organization = data.organization
-              this.candidates   = data.candidates
               this.surveys      = data.surveys
               this.faculty      = data.faculty 
+              this.files        = data.files
+              this.tasks        = data.tasks
+
+              if(this.organization.terms.length > 0) {
+                this.currentTerm = this.organization.terms[0]
+                this.getCandidates()
+              }
+              else {
+                alert("The administrator has not setup a term.")
+              }
+              this.loading      = false
           })
-           this.$Progress.finish()
+           .catch(error => {
+            const auth = error.response.data.authenticated
+            if(!auth) {
+              alert("Please login.")
+              window.sessionStorage.clear()
+              window.location.replace("/");
+            }
+        })
+      },
+       getCandidates() {
+          // console.log("GET CANDIDATES")
+          let org = this.user.Organization
+          window.axios.get(API_URL+'/candidate/all/'+org+'/'+this.currentTerm.year)
+          .then(({ data }) => {
+            // console.log(data)
+            let x 
+            for(x in data) {
+              this.candidates.push(data[x]['_source'])
+            }
+          })
           .catch(function (e) {
-             this.$Progress.fail()
-              alert('Error loading dashboard')
+            console.log(e)
+          })
+      },
+      loadCandidates: function(year) {
+          console.log("LOAD CANDIDATES: " + year)
+          let org = this.user.Organization
+          this.candidates = []
+          window.axios.get(API_URL+'/candidate/all/'+org+'/'+year)
+          .then(({ data }) => {
+            let x 
+            for(x in data) {
+              this.candidates.push(data[x]['_source'])
+            }
+          })
+          .catch(function (e) {
+            console.log(e)
           })
       },
       changeTab(tab) {
@@ -140,6 +232,9 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+#admin-dashboard{
+  margin-top: 60px;
+}
 #admin-menu {
     display: block;
     width: 100%;
@@ -163,12 +258,12 @@ export default {
     transition: all .2s ease-in-out;
   }
   #admin-menu-list li:hover {
-    background-color: #005837a6;
+    background-color: #13a89eab;
     color: #FFF;
     cursor: pointer;
 }
 #admin-menu-list li.active {
-    background-color: #005837;
+    background-color: #13a89e;
     color: #FFF;
     border: 1px solid #FFF;
 }
@@ -191,5 +286,12 @@ export default {
    }
     #evaluatorTable th {
     font-size: 10px;
+  }
+  #currentTerm-banner {
+    position: fixed;
+    top: 19px;
+    z-index: 2000;
+    color: #FFF;
+    right: 42%;
   }
 </style>

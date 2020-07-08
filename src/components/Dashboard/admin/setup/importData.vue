@@ -1,70 +1,138 @@
 <template>
 	<div class="container-fluid">  
-		<b-row>
-      <!-- <h5>Automate Uplaod</h5> -->
-      <b-col sm="6">
-         <label class="tx-12 wt-600 dark-gray">Choose Year:</label>
-            <b-form-select v-model="year" :options="priorYears"></b-form-select>
+    <i id="loader" v-if="loading" class="fa fa-spinner fa-pulse fa-3x fa-fw text-info" ></i>
+
+		<b-row :class="{fade : loading }">
+      <b-col sm="9">
+        <label class="tx-12 wt-600 dark-gray fw">Choose View:</label>
+         <b-form-group label="" class="">
+          <b-form-radio-group
+            v-model="viewSelected"
+            :options="viewOptions"
+            name="radio-options"
+          ></b-form-radio-group>
+        </b-form-group>
       </b-col>
-      <b-col sm="3"></b-col>
-      <b-col sm="3" class="pt-2">
-        <b-button variant="primary" size="sm" class="float-right mt-4 mr-1" @click="startImport()">Start Import</b-button>
-        <b-button variant="danger" size="sm" class="float-right mt-4 mr-1" @click="resetImport()">Clear</b-button>
+
+      <b-col sm="3">
+        <label class="tx-12 wt-600 dark-gray fw">&nbsp;</label>
+         <b-button 
+            class="mr-1 float-right"
+            variant="primary"
+            size="sm"
+            >Save & Contine
+          </b-button>
       </b-col>
-      <b-col sm="12">
-          <hr />
-          <table id="" class="table table-bordered table-hover" :class="{'d-none': !showResults}">
-           <thead>
-              <tr>
-                <th scope="col">Import Results</th>
-              </tr>
-            </thead>
-             <tbody>
-              <tr v-for="(x, index) in results">
-                  <td> {{ x['Last Name'] }}, {{ x['First Name'] }} </td>
-              </tr>
-            </tbody>
-          </table>
-        <!-- <h5>Manual Upload</h5> -->
-        <vue-dropzone 
-          ref="myVueDropzone" 
-          id="dropzone" 
-          class="mb-4"
-          :class="{'d-none': hideDropZone}" 
-          @vdropzone-file-added="vfileAdded"
-          @vdropzone-success="vsuccess"
-          @vdropzone-upload-progress="vlogProgress"
-          v-on:vdropzone-sending="sendingEvent"
-          :options="dropzoneOptions"
-          :useCustomSlot="true"
-          :duplicateCheck="true"
-        >
-          <div class="dropzone-custom-content mt-2 text-center">
-            <span class="fa-stack fa-4x">
-              <i class="fa fa-circle fa-stack-2x light-gray"></i>
-              <i class="fa fa-upload fa-stack-1x white"></i>
-            </span>
-            <p class="text-center tx-14 wt-500">Drag and drop a file you want to upload</p>
-            <span class="btn btn-primary btn-sm">Select File</span>
+      <b-col sm="12"><hr /></b-col>
+    </b-row>
+
+    <b-row :class="{'d-none' :  viewSelected != 'Import Files'}">
+       <b-col sm="12" md="5" lg="5">
+        <b-card id="files-container">
+          <label class="tx-12 wt-600 dark-gray fw">Files {{ this.currentTerm.year }}</label>
+          <p v-if="this.year == null" class="tx-12 text-center">please select an interview year</p>
+          <b-form-input v-if="year" size="sm" v-model="fsearch" placeholder="search my files" class="mb-2"></b-form-input>
+          <div v-if="ZIPS.length > 0">
+            Zips
+            <i class="fa fa-caret-down gray pointer float-right" v-b-toggle.collapse-zips variant="primary"></i>
+            <hr />
+            <b-collapse id="collapse-zips" visible class="mt-2 file-collapse">
+              <div v-for="(x, index) in ZIPS">
+                <p class="mb-1">
+                  <i class="fa fa-file-archive-o mr-1 gray" ></i>
+                  <a :href="x.url" class="file">{{ x.name }}</a>
+                  <i class="fa fa-times-circle float-right pointer red" @click="deleteFile(index, x, 'ZIPS')"   v-b-tooltip.hover title="Delete"></i>
+                </p>
+              </div>
+            </b-collapse>
           </div>
-        </vue-dropzone>
+
+          <div v-if="CSVS.length > 0">
+            CSVs
+            <i class="fa fa-caret-down pointer float-right" v-b-toggle.collapse-csvs variant="primary"></i>
+            <hr />
+            <b-collapse id="collapse-csvs" visible class="mt-2 file-collapse">
+              <div v-for="(x, index) in CSVS">
+                 <p class="mb-1">
+                  <i class="fa fa-file-excel-o mr-1 gray"></i>
+                  <a :href="x.url" class="file">{{ x.name }}</a>
+                  <i class="fa fa-times-circle float-right pointer red" @click="deleteFile(index, x, 'CSVS')"  v-b-tooltip.hover title="Delete"></i>
+                </p>
+              </div>
+            </b-collapse>
+
+            <hr />
+          </div>
+
+          <div v-if="PDFS.length > 0">
+            PDFs
+            <i class="fa fa-caret-down pointer float-right" v-b-toggle.collapse-pdfs variant="primary"></i>
+            <hr />
+            <b-collapse id="collapse-pdfs" visible  class="mt-2 file-collapse">
+              <div v-for="(x, index) in PDFS">
+                 <p class="mb-1">
+                  <i class="fa fa-file-pdf-o mr-1 gray" ></i>
+                  <a :href="x.url" class="file">{{ x.name }}</a>
+                  <i class="fa fa-times-circle float-right pointer red" @click="deleteFile(index, x , 'PDFS')"   v-b-tooltip.hover title="Delete"></i>
+                </p>
+              </div>
+            </b-collapse>
+          </div>
+        </b-card>
       </b-col>
-      <b-col sm="6">
-        <label class="tx-18 wt-600 dark-gray">Candidate Fields</label>
+
+      <b-col sm="12" md="7" lg="7">
+          <vue-dropzone 
+            ref="myVueDropzone" 
+            id="dropzone" 
+            :include-styling="true"
+            @vdropzone-file-added="vfileAdded"
+            @vdropzone-files-added="vfilesAdded"
+            @vdropzone-success="vsuccess"
+            @vdropzone-upload-progress="vlogProgress"
+            v-on:vdropzone-sending="sendingEvent"
+            :options="dropzoneOptions"
+            :useCustomSlot="true"
+            :duplicateCheck="true"
+          >
+            <div class="dropzone-custom-content mt-2 text-center">
+              <span class="fa-stack fa-2x">
+                <i class="fa fa-circle fa-stack-2x light-gray"></i>
+                <i class="fa fa-upload fa-stack-1x white"></i>
+              </span>
+                <p class="text-center tx-14 wt-500 mb-0">Drag and drop files you want to upload.</p>
+                <p class="tx-10 text-center mb-0">ZIP, CSV, and PDF only.</p>
+                <span class="btn btn-primary btn-sm mt-1">Select File</span>
+            </div>
+          </vue-dropzone>
+      </b-col>
+    </b-row>
+
+    <b-row :class="{'d-none' :  viewSelected != 'Filter Candidates'}">
+     <b-col sm="12" md="12" lg="12">
+      <b-card>
+        <b-button size="sm" class="add-btn mr-1" variant="secondary">All Candidates</b-button>
+        <b-button size="sm" class="add-btn mr-1" variant="primary">Chosen Candidates</b-button>
+        <span class="float-right tx-12 wt-500 gray ml-2 pointer" @click="refreshTerm()">
+          <i class="fa fa-sync"></i>
+        </span>
+        <span class="float-right tx-12 wt-500 gray">{{ candidates.length }} Candidates</span>
         <hr />
-        <ul class="candidate-fields">
-           <li class="candidate-field" v-for="(x, index) in header">{{ x }}</li>
-        </ul>
-      </b-col>
-       <b-col sm="6">
-        <label class="tx-18 wt-600 dark-gray">Candidates {{ stagedCandidates.length }}</label>
-         <hr />
-         <p class="mb-0" v-for="(x, index) in stagedCandidates">
-          <i class="fa fa-user-circle gray"></i> {{ x['Last Name'] }}, {{ x['First Name'] }} 
-        </p>
-      </b-col>
-      </b-col>
-    </b-col>
+        <ag-grid-vue
+          id="grid"
+          style="width: 100%; height: 500px;"
+          class="ag-theme-material"
+          :gridOptions="gridOptions"
+          :columnDefs="columnDefs"
+          :rowData="rowData"
+          :animateRows="true"
+          @onGridReady="onGridReady"
+          :context="context"
+          :frameworkComponents="frameworkComponents"
+        >
+        </ag-grid-vue>
+      </b-card>
+     </b-col>
     </b-row>
 	</div>
 </template>
@@ -72,58 +140,96 @@
 <script>
 const currentYear = (new Date()).getFullYear();
 const API_URL = process.env.VUE_APP_API_URL
+const S3_BUCKET = process.env.VUE_APP_S3_BUCKET
 
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 const csv = require('csvtojson')
 
 
+import { AgGridVue } from 'ag-grid-vue';
+import "ag-grid-enterprise";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-material.css";
+
+import {fields} from './fields'
+import photoRender from "./photoRender";
 
 export default {
 	name: 'importData',
-  props: ["organization","user","candidates","surveys","faculty"],
+  props: ["organization","user","candidates","surveys","faculty","currentTerm", "files"],
   watch: {
     organization: function(newVal, oldVal) {
       if(newVal) {
         this.organization = newVal
       }
+    },
+    currentTerm: function(newVal, oldVal) {
+      if(newVal) {
+        this.year = newVal.year
+      }
+    },
+    files: function(newVal, oldVal) {
+      if(newVal) {
+        this.files = newVal
+      }
+    },
+    candidates: function(newVal, oldVal) {
+      if(newVal) {
+        this.candidates = newVal
+        this.rowData = newVal
+      }
     }
   },
 	data() {
     	return {
+        fsearch: '',
+        csearch: '',
+        showDropZone: false,
+        loading: false,
         fields:['Date', 'File Name', 'Upload Progress'],
         imports :[],
         file: null,
         fileAdded: null,
-        year: null,
+        year: this.currentTerm.year,
         header: null,
         stagedCandidates: [],
-        hideDropZone: false,
         showResults: false,
         results: [],
+        viewSelected: 'Filter Candidates',
+        viewOptions: ['Filter Candidates', 'Import Files'],
         dropzoneOptions: {
-          url: '/api/upload',
-          autoProcessQueue: false,
+          url: API_URL+'/dashboard/admin/upload',
+          autoProcessQueue: true,
           autoQueue: true,
-          parallelUploads: 1,
-          maxFiles: 1,
+          parallelUploads: 10,
           uploadMultiple: false,
           createImageThumbnails: false,
-          addRemoveLinks: false,
+          addRemoveLinks: true,
           timeout: 360000, //milliseconds
-          // headers: {
-          //       "X-CSRF-TOKEN": document.head.querySelector("[name=csrf-token]").content
-          // },
           maxFilesize: 10000,
           chunking: true,
           forceChunking: true,
           chunkSize: 2000000,
-          uploadMultiple: false
+          uploadMultiple: false,
+          acceptedFiles: 'application/pdf, text/csv, application/zip'
         },
+        gridOptions: null,
+        gridApi: null,
+        columnApi: null,
+        rowSelection: "single",
+        context: null,
+        frameworkComponents: null,
+        paginationNumberFormatter: null,
+        paginationPageSize: 100,
+        columnDefs: fields,
+        rowData: this.candidates
       }
   	},
 	components: {
-    	vueDropzone: vue2Dropzone
+    	vueDropzone: vue2Dropzone,
+      AgGridVue: AgGridVue,
+      photoRender
   	},
   computed: {
    priorYears() {
@@ -136,111 +242,172 @@ export default {
     },
     checkHeader() {
       return this.header
-    }
-  },
-  mounted() {},
-  	methods: {
-      resetImport() {
-        this.stagedCandidates = []
-        this.header = null
-        this.$refs.myVueDropzone.removeAllFiles()
-        this.hideDropZone = false
-        this.showResults = false
+    },
+    CSVS: {
+      get() { 
+        let files = this.sortedFiles.filter(i => i.name.includes('.csv'));
+        return files
       },
-      startImport() {
-        if(this.year ==  null) {
-          alert('Select a year.')
+      set: function(newValue) {
+         let files = newValue.filter(i => i.name.includes('.csv'));
+        return files
+      }
+    },
+    PDFS: {
+      get() {
+        let files = this.sortedFiles.filter(i => i.name.includes('.pdf'));
+        return files
+      },
+      set: function(newValue) {
+        console.log(newValue)
+        let files = newValue.filter(i => i.name.includes('.pdf'));
+        return files
+      }
+    },
+    ZIPS: {
+      get() {
+        let files = this.sortedFiles.filter(i => i.name.includes('.zip'));
+        return files
+      },
+      set: function(newValue) {
+        let files = newValue.filter(i => i.name.includes('.zip'));
+        return files
+      }
+    },
+    sortedCustodians: {
+        get () {
+          /* 
+          COMPUTED PROPERTY IS CONNECTED TO THE SEARCH TEXT BOX IN THE COMPONENT
+          ALLOWS USERS TO SEARCH THEIR MATTERS AND ASSIGNMENTS
+          */
+          if(this.candidates.length > 0) {
+            return this.candidates
+              ? this.candidates.filter(item => 
+                item['Last Name'].toLowerCase().includes( this.csearch.toLowerCase() )
+                ||
+                item['First Name'].toLowerCase().includes(this.csearch.toLowerCase())
+                )
+              : this.candidates
+            }
+            else {
+              let arr = []
+              return arr
+            }
+        },
+        set () {
+          this.candidates.sort(function(a, b) {
+              if(a['First Name'] < b['First Name']) { return -1 }
+              if(a['Last Name'] > b['Last Name']) { return 1  }
+              return 0
+            })
         }
-        else if(this.stagedCandidates.length == 0) { 
-          alert('Please Upload A CSV')
+      },
+    sortedFiles: {
+      get () {
+         let year = this.currentTerm.year
+         if(this.files.length > 0) {
+            return this.files
+              ? this.files.filter(item => item.year.includes(year) && item.name.toLowerCase().includes(this.fsearch.toLowerCase()))
+              : this.files
+            }
+            else {
+              let arr = []
+              return arr
+            }
+      },
+      set() {
+        let year = this.currentTerm.year
+        if(year != undefined) {
+          return this.files
+              ? this.files.filter(item => item.year.includes(year) )
+              : this.files
         }
         else {
-          let c = confirm('Start importing '+this.stagedCandidates.length+' candidates for the year '+this.year)
-          if(c) {
-            this.$Progress.start()
-            let i 
-            for(i in this.stagedCandidates) {
-              // CHECK FOR EMPTY VALUES
-              let x
-              let co = this.stagedCandidates[i]
-              for(x in co) { if( co[x] == "" || co[x] == null) { co[x] = "n/a" } }
-                // ADD REQUIRED DYNAMO DB VALUES 
-                this.stagedCandidates[i]['Organization']  = this.organization.name
-                this.stagedCandidates[i]['Rank-Term']      = this.year
-                this.stagedCandidates[i]['interview']      = { 'status' : 'incomplete' }
-                this.stagedCandidates[i]['survey_1']       = { 'status' : 'incomplete' }
-                this.stagedCandidates[i]['survey_2']      = { 'status' : 'incomplete' }
-              }
-            }
-            // axios post to api 
-            window.axios.post(API_URL+'/candidate/add/'+this.organization.name,  this.stagedCandidates)
+          let f = []
+          return f
+        }
+      }
+    }
+  },
+  beforeMount() {
+      this.gridOptions = {
+                defaultColDef: { sortable: true},
+      }
+      this.columnDefs = fields
+      this.context = { componentParent: this }
+      this.frameworkComponents = { 
+              "photoRender": photoRender
+      };
+  },
+  mounted() {
+      this.gridApi = this.gridOptions.api
+      this.gridColumnApi = this.gridOptions.columnApi
+      this.gridApi.sizeColumnsToFit();
+  },
+  methods: {
+      refreshTerm() {
+         this.$emit('changeTerm', this.currentTerm)
+      },
+      deleteFile(index, file, farray) {
+        let vm = this
+        let fs = this.files.findIndex(i => i.path.includes(file.path));
+
+        let c = confirm("Delete " + file.name + "?")
+        if(c) {
+          let input = {
+            path: file.path
+          }
+          window.axios.post( API_URL+'/dashboard/admin/file/delete',  input)
             .then(({data}) => { 
-              alert("Candidates Imported Successfully")
-              this.results = data
-              this.showResults = true
-              this.$Progress.finish()
+              console.log(data)
+              this.files.splice(fs, 1)
+              this.loading = false
             })
             .catch(function (e) { 
-              this.$Progress.fail()
+              vm.loading = false
               alert(e) 
             })
-        } 
-      },
-      chooseFile() {
-        document.getElementsByClassName("dropzone")[0].click();
-      },
-      processQueue() {
-          this.$refs.myVueDropzone.processQueue()
+         }
+         else {
+            this.loading = false
+         }
       },
       vfileAdded(file) {
-        let vm = this
-        this.file = file
-        this.fileAdded = true
-        let fileCheck = file.name.endsWith('.csv')
-        if (fileCheck) {
-          this.hideDropZone = true
-          let i = {
-            "date" : '',
-            "name" : file.name,
-            "progress" : file.progress,
-          }
-          this.imports.push(i)
-          const reader = new FileReader();
-            reader.onload = function(event) {
-              let string = event.target.result
-              csv()
-                .fromString(string)
-                .on('header',(header)=>{
-                  vm.header = header
-
-                })
-                .then((jsonObj)=>{
-                  vm.stagedCandidates = jsonObj
-                })
-          }
-
-          reader.readAsText(file);
-
-        } else {
-            this.validZip = null
-            this.$refs.myVueDropzone.removeFile(file)
-            alert("Not a valid upload file.")
-        }
+         this.$refs.myVueDropzone.processQueue(file)
       },
-      sendingEvent (file, xhr, formData) {},
-      vsuccess(file, response) {},
-      vlogProgress(file, progress, bytesSent) {},
+      vfilesAdded(file) {
+         this.$refs.myVueDropzone.processQueue(file)
+      },
+      sendingEvent (file, xhr, formData) {
+         formData.append('organization', this.organization.name);
+         formData.append('year', this.year);
+      },
+      vsuccess(file, response) {
+        let newFile = {
+          name: file.name,
+          path: S3_BUCKET+'/'+this.organization.name+'/'+this.year+'/'+file.name,
+          url: 'null',
+          year: this.year.toString(),
+        }
+        this.files.push(newFile)
+      },
+      vlogProgress(file, progress, bytesSent) {
+      },
+      onGridReady(params) {
+      params.api.sizeColumnsToFit();
+      window.addEventListener("resize", function() {
+            setTimeout(function() {
+              params.api.sizeColumnsToFit()
+            })
+          })  
+      }
     }
 };
 </script>
 <style scoped lang="scss">
-  .candidate-fields { padding-inline-start: 0px; }
-  .candidate-field {
-    list-style: none;
-    display: block;
-    // font-size: 12px;
-    background-color: #f7f7f7;
-    padding: 10px;
-    margin: 5px; 
-  }
+#files-container, #importer-container {
+  min-height: 63vh;
+  height: 63vh;
+  overflow-y: scroll;
+}
 </style>

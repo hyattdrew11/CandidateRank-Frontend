@@ -24,6 +24,8 @@ export default {
     		view: this.$store.state.user.role,
     	}
   	},
+    mounted() {
+    },
   	components: {
     	Navigation,
       Admin,

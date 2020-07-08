@@ -12,7 +12,7 @@
 
              <b-col sm="3">
               <label class="tx-12 wt-600 dark-gray">Choose Year:</label>
-              <b-form-select v-model="year" :options="priorYears" @change="getCandidates(year)"></b-form-select>
+              <b-form-select v-model="currentTerm.year" :options="priorYears" @change="getCandidates(year)"></b-form-select>
             </b-col>
 
             <b-col sm="5"></b-col>
@@ -36,9 +36,9 @@
                         <!-- <img class="profile-sm" :src="x.picture" /> -->
                          {{ x['First Name'] }} {{ x['Last Name'] }}
                       </td>
-                      <td>{{ x.interview.status }}</td>
-                      <td class="td-int">{{ x.survey_1.status }}</td>
-                      <td class="td-int">{{ x.survey_2.status }}</td>
+                      <td></td>
+                      <td class="td-int"></td>
+                      <td class="td-int"></td>
                       <td class="td-int">
                         <b-button size="sm" variant="primary" squared class="">View</b-button>
                       </td>
@@ -52,9 +52,10 @@
 
 <script>
 const currentYear = (new Date()).getFullYear();
+const API_URL = process.env.VUE_APP_API_URL
 export default {
 	name: 'PreInterviewRankings',
-  props: ['organization', 'user', 'candidates', 'reviewers'],
+  props: ['organization', 'user', 'candidates', 'reviewers', 'currentTerm'],
    watch: {
     organization: function(newVal, oldVal) {
       if(newVal) {
@@ -118,16 +119,15 @@ export default {
           if(order == 'desc') {
             this.fields[index].order = 'asc'
           }
-          console.log(this.fields[index])
         },
         getCandidates(year) {
           let org = this.user.Organization
-          window.axios.get('/api/candidate/all/'+org+'/'+year)
+          window.axios.get(API_URL+'/candidate/all/'+org+'/'+year)
           .then(({ data }) => {
-            console.log(data[0])
             let x 
-            for(x in data)
-              this.candidates.push(data[x])
+            for(x in data) {
+              this.candidates.push(data[x]['_source'])
+            }
           })
           .catch(function (e) {
               alert('Error loading search candidates, please refresh.')

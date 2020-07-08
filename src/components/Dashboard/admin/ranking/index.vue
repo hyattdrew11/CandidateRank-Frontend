@@ -1,105 +1,93 @@
 <template>
-	<div id="admin-ranking-container" class="mt-3">
+  <div id="admin-ranking-container" class="mt-3">
     <b-row>
-       <b-col sm="6">
-         <label class="tx-12 wt-600 dark-gray">Search Candidates:</label>
-         <b-form-input v-model="text" placeholder="Search Candidates"></b-form-input>
-      </b-col>
-      <b-col sm="3">
-        <label class="tx-12 wt-600 dark-gray">Ranking Type:</label>
-        <b-form-select v-model="rankingType" :options="rankingTypes"></b-form-select>
+       <b-col sm="8">
+        <h4 v-if="currentTerm != null">{{ currentTerm.department }} Pre-Interview List {{ currentTerm.year }}</h4>
+       <!--   <label class="tx-12 wt-600 dark-gray">Search Candidates:</label>
+         <b-form-input v-model="search" placeholder="Search Candidates"></b-form-input> -->
       </b-col>
 
-       <b-col sm="3">
-        <label class="tx-12 wt-600 dark-gray">Choose Year:</label>
-        <b-form-select v-model="year" :options="priorYears" @change="getCandidates(year)"></b-form-select>
+      <b-col sm="4">
+        <p><label class="tx-12 wt-600 dark-gray">Ranking Actions:</label></p>
+        <b-button size="sm" class="ml-1">Export list</b-button>
       </b-col>
-
-      <b-col sm="5"></b-col>
       <b-col sm="12">
         <hr />
-        <table id="PreInterviewRankings" class="table table-bordered table-hover">
-         <thead>
-            <tr>
-              <th v-for="(x, index) in fields" scope="col" @click="sort(index,  x.order)">
-                {{ x.name }} 
-                  <i v-if=" x.order == null" class="fa fa-sort float-right gray"></i>
-                  <i v-if=" x.order == 'asc'" class="fa fa-caret-up float-right"></i>
-                  <i v-if=" x.order == 'desc'" class="fa fa-caret-down float-right"></i>
-              </th>
-            </tr>
-          </thead>
-           <tbody>
-            <tr v-for="(x, index) in candidates">
-                <td>{{ index }}</td>
-                <td class="pointer wt-600" @click="candidateDetails(x)">
-                  <!-- <img class="profile-sm" :src="x.picture" /> -->
-                   {{ x['First Name'] }} {{ x['Last Name'] }}
-                </td>
-                <td>{{ x.interview.status }}</td>
-                <td class="td-int">{{ x.survey_1.status }}</td>
-                <td class="td-int">{{ x.survey_2.status }}</td>
-                <td class="td-int">
-                   <b-button size="sm" variant="primary" squared class="">View</b-button>
-                </td>
-            </tr>
-          </tbody>
-        </table>
+        <b-card>
+          <ag-grid-vue
+            id="grid"
+            style="width: 100%; height: 500px;"
+            class="ag-theme-material"
+            :gridOptions="gridOptions"
+            :columnDefs="columnDefs"
+            :rowData="rowData"
+            :animateRows="true"
+            :context="context"
+            :frameworkComponents="frameworkComponents"
+          >
+          </ag-grid-vue>
+        </b-card>
       </b-col>
     </b-row> 
   </div>
 </template>
 
 <script>
+
+
+
+
 const API_URL = process.env.VUE_APP_API_URL
-
-
+import { AgGridVue } from 'ag-grid-vue';
+import "ag-grid-enterprise";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-material.css";
+import {fields} from './fields'
+import photoRender from "./photoRender";
 export default {
-
   name: 'index',
-  props: ['organization', 'user', 'candidates', 'faculty'],
+  props: ['active','organization', 'user', 'candidates', 'faculty', 'currentTerm'],
    watch: {
     organization: function(newVal, oldVal) {
       if(newVal) {
         this.organization = newVal
       }
-    }
+    },
+    candidates: function(newVal, oldVal) {
+      if(newVal) {
+        this.candidates = newVal
+        this.rowData = newVal
+      }
+    },
+    active: function(newVal, oldVal) {
+      if(newVal) {
+        if(newVal == true) {
+          this.gridApi.sizeColumnsToFit()
+        }
+      }
+    },
   },
   data() {
       return {
+        search: '',
         text: null,
         year: null,
-        rankingTypes: ['Pre-Interview', 'Interview', 'Dynamic List'],
-        rankingType: '',
-        fields: [
-          {
-            "name": "Rank",
-            "order": null,
-            },
-          {
-            "name": "Applicant",
-            "order": null,
-            },
-          {
-            "name": "Interview",
-            "order": null,
-            },
-          {
-            "name": "Pre-Interview Surevey",
-            "order": null,
-            },
-          {
-            "name": "Interview Survey",
-            "order": null,
-          },
-          {
-            "name": "Application",
-            "order": null,
-          }
-        ],
+        gridOptions: null,
+        gridApi: null,
+        columnApi: null,
+        rowSelection: "single",
+        context: null,
+        frameworkComponents: null,
+        paginationNumberFormatter: null,
+        paginationPageSize: 100,
+        columnDefs: fields,
+        rowData: this.candidates
       }
     },
-    components: {},
+    components: {
+      AgGridVue,
+      photoRender
+    },
     computed: {
       priorYears() {
         let x
@@ -108,10 +96,50 @@ export default {
         for(x in terms) { years.push(terms[x].year) }
         this.year = years[0]
         return years
+      },
+      sortedCustodians: {
+        get () {
+          /* 
+          COMPUTED PROPERTY IS CONNECTED TO THE SEARCH TEXT BOX IN THE COMPONENT
+          ALLOWS USERS TO SEARCH THEIR MATTERS AND ASSIGNMENTS
+          */
+          return this.candidates
+            ? this.candidates.filter(item => item['First Name'].toLowerCase().includes(this.search.toLowerCase()))
+            : this.candidates
+        },
+        set () {
+          this.candidates.sort(function(a, b) {
+              if(a['First Name'] < b['First Name']) { return -1 }
+              if(a['Last Name'] > b['Last Name']) { return 1  }
+              return 0
+            })
+        }
       }
     },
-    mounted() {},
+    beforeMount() {
+        this.gridOptions = {
+                  defaultColDef: { sortable: true},
+        }
+        this.columnDefs = fields
+        this.context = { componentParent: this }
+        this.frameworkComponents = { 
+              "photoRender": photoRender
+            };
+    },
+    mounted() {
+        this.gridApi = this.gridOptions.api
+        this.gridColumnApi = this.gridOptions.columnApi
+        // this.gridApi.sizeColumnsToFit();
+    },
     methods: {
+      onGridReady(params) {
+      params.api.sizeColumnsToFit();
+      window.addEventListener("resize", function() {
+            setTimeout(function() {
+              params.api.sizeColumnsToFit()
+            })
+          })  
+      },
         sort(index, order) {
           if(order == null) {
             this.fields[index].order = 'desc'
@@ -128,10 +156,10 @@ export default {
           let org = this.user.Organization
           window.axios.get(API_URL+'/candidate/all/'+org+'/'+year)
           .then(({ data }) => {
-            console.log(data[0])
             let x 
-            for(x in data)
-              this.candidates.push(data[x])
+            for(x in data) {
+              this.candidates.push(data[x]['_source'])
+            }
           })
           .catch(function (e) {
               alert('Error loading search candidates, please refresh.')

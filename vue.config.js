@@ -6,7 +6,7 @@ module.exports = {
       },
       proxy: {
         '/api': {
-          target: 'http://localhost:5000',
+          target: 'http://3.235.84.235:5000',
           ws: true,
           changeOrigin: true,
           logLevel: 'debug' // this what you want

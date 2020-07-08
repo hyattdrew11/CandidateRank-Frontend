@@ -22,10 +22,6 @@
   			</b-row>
   		</div>
   	</div>
-  	<div v-else>
-  		<a href="/login">Login</a>
-    	<a href="/signup">Signup</a>
-  	</div>
   </div>
 </template>
 

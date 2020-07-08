@@ -20,7 +20,6 @@ const state = {
 const actions = {
   
   login (context, userData) {
-    console.log(userData)
     context.commit('setUserData', { userData })
     return authenticate(userData)
       .then((response) => {
@@ -42,7 +41,6 @@ const actions = {
     })
   },
   loadCandidates (organization) {
-    console.log(loadCandidates)
     return getCandidates(organization)
     .then((response) => {
         context.commit('setCandidates', { candidates: response })

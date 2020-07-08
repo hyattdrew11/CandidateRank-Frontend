@@ -1,5 +1,5 @@
 <template>
-  <div id="admin-dashboard" class="container-fluid">
+  <div id="faculty-dashboard" class="container-fluid">
     <b-row no-gutters>
       <div id="faculty-menu-container">
         <div id="faculty-menu">
@@ -14,6 +14,7 @@
           :reviewers="reviewers"
           :candidates="candidates"
           :organization="organization"
+          :currentTerm="currentTerm"
           :class="{'d-none' : tab != 'Ranking'}"
         />
         <InterviewSchedule    :user="user" :reviewers="reviewers" :candidates="candidates" :organization="organization" :class="{'d-none' : tab != 'Schedule'}"/>
@@ -48,6 +49,7 @@ export default {
             name: null,
             terms: []
           },
+          currentTerm: null
       }
   	},
   	components: {
@@ -58,7 +60,6 @@ export default {
     },
     mounted() {
       this.loadDashboard()
-      // this.getCandidates()
     },
   	methods: {
       updateCandidates() {
@@ -66,34 +67,45 @@ export default {
       },
       changeTab(tab) {
         this.tab = tab
-
       },
       loadDashboard() {
-        this.$Progress.start()
-        let org = this.user.Organization
-        window.axios.get(API_URL+'/dashboard/faculty/'+org+'/'+currentYear)
-          .then(({ data }) => {
-            this.$Progress.finish()
+        const org = this.user.Organization
+        const token = this.$store.state.jwt.token.token 
+        const authHeader = { headers: { "Authorization" : 'Bearer: ' + token } }
+
+        window.axios.get(API_URL+'/dashboard/faculty/'+org, authHeader)
+        .then(({ data }) => {
             this.organization = data.organization
-              // this.candidates   = data.candidates
-              // this.surveys      = data.surveys
-              // this.faculty      = data.faculty 
+            if(this.organization.terms.length > 0) {
+              this.currentTerm = this.organization.terms[0]
+              this.getCandidates()
+            }
+            else {
+              alert("The administrator has not setup a term.")
+            }
+        })
+       .catch(error => {
+          const auth = error.response.data.authenticated
+          if(!auth) {
+            alert("Please login.")
+            window.sessionStorage.clear()
+            window.location.replace("/");
+          }
+        })
+      },
+      getCandidates() {
+          let org = this.user.Organization
+          window.axios.get(API_URL+'/candidate/all/'+org+'/'+this.currentTerm.year)
+          .then(({ data }) => {
+            let x 
+            for(x in data) {
+              this.candidates.push(data[x]['_source'])
+            }
           })
           .catch(function (e) {
-            this.$Progress.fail()
-            alert('Error loading dashboard')
+              alert('Error loading search candidates, please refresh.')
           })
       },
-      //  getCandidates() {
-      //     let org = this.user.Organization
-      //     window.axios.get('/api/candidate/all/'+org+'/'+currentYear)
-      //     .then(({ data }) => {
-      //         this.candidates = data
-      //     })
-      //     .catch(function (e) {
-      //         alert('Error loading search candidates, please refresh.')
-      //     })
-      // },
     }
 };
 </script>
