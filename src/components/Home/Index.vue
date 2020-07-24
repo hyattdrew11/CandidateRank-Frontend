@@ -64,7 +64,7 @@
       <b-container fluid class="pb-4">
         <b-row no-gutters>
           <b-col sm="12" md="4" lg="4">
-            <span class="step-num">1</span>
+            <span class="step-num">2</span>
             <div class="step">
               <h4 class="mt-0">AUTOMATED PAPERLESS SOLUTION</h4>
               <img src="img/step-1.jpg" class="img-fluid mb-2" />
@@ -74,7 +74,7 @@
             </div>
           </b-col>
           <b-col sm="12" md="4" lg="4">
-            <span class="step-num">2</span>
+            <span class="step-num">3</span>
             <div class="step">
               <h4 class="mt-0">FULLY INTEGRATED</h4>
               <img src="img/step-2.jpg" class="img-fluid mb-2" />
@@ -84,7 +84,7 @@
             </div>
           </b-col>
            <b-col sm="12" md="4" lg="4">
-            <span class="step-num">3</span>
+            <span class="step-num">4</span>
             <div class="step">
               <h4 class="mt-0">SAVES TIME & MONEY</h4>
               <img src="img/step-3.jpg" class="img-fluid mb-2" />
