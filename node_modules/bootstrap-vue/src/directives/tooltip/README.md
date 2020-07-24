@@ -3,6 +3,8 @@
 > Documentation and examples for adding custom BootstrapVue tooltips, using Bootstrap v4 CSS for
 > styling and animations. Tooltips can be triggered by hovering, focusing, or clicking an element
 
+## Overview
+
 Use the `v-b-tooltip` directive on any element or component where you would like a tooltip to
 appear.
 
@@ -13,8 +15,6 @@ appear.
 
 <!-- b-tooltip.vue -->
 ```
-
-## Overview
 
 Things to know when using the tooltip directive:
 
@@ -103,6 +103,30 @@ The default position is `top`. Positioning is relative to the trigger element.
       </b-col>
       <b-col md="3" class="py-3">
         <b-button v-b-tooltip.hover.bottom="'Tooltip!'" variant="primary">Bottom</b-button>
+      </b-col>
+      <b-col md="3" class="py-3">
+        <b-button v-b-tooltip.hover.topright="'Tooltip!'" variant="primary">Top right</b-button>
+      </b-col>
+      <b-col md="3" class="py-3">
+        <b-button v-b-tooltip.hover.topleft="'Tooltip!'" variant="primary">Top left</b-button>
+      </b-col>
+      <b-col md="3" class="py-3">
+        <b-button v-b-tooltip.hover.bottomright="'Tooltip!'" variant="primary">Bottom right</b-button>
+      </b-col>
+      <b-col md="3" class="py-3">
+        <b-button v-b-tooltip.hover.bottomleft="'Tooltip!'" variant="primary">Bottom left</b-button>
+      </b-col>
+      <b-col md="3" class="py-3">
+        <b-button v-b-tooltip.hover.lefttop="'Tooltip!'" variant="primary">Left top</b-button>
+      </b-col>
+      <b-col md="3" class="py-3">
+        <b-button v-b-tooltip.hover.leftbottom="'Tooltip!'" variant="primary">Left bottom</b-button>
+      </b-col>
+      <b-col md="3" class="py-3">
+        <b-button v-b-tooltip.hover.righttop="'Tooltip!'" variant="primary">Right top</b-button>
+      </b-col>
+      <b-col md="3" class="py-3">
+        <b-button v-b-tooltip.hover.rightbottom="'Tooltip!'" variant="primary">Right bottom</b-button>
       </b-col>
     </b-row>
   </b-container>
@@ -371,7 +395,7 @@ Where `<value>` can be (optional):
 | `fallbackPlacement` | String or Array                     | `'flip'`         | Allow to specify which position Popper will use on fallback. Can be `flip`, `clockwise`, `counterclockwise` or an array of placements. For more information refer to Popper.js's behavior docs                                                                                                                                                                                                                                                                             |
 | `boundary`          | String ID or HTMLElement            | `'scrollParent'` | The container that the tooltip will be constrained visually. The default should suffice in most cases, but you may need to change this if your target element is in a small container with overflow scroll. Supported values: `'scrollParent'` (default), `'viewport'`, `'window'`, or a reference to an HTML element                                                                                                                                                      |
 | `boundaryPadding`   | Number                              | `5`              | Amount of pixel used to define a minimum distance between the boundaries and the tooltip. This makes sure the tooltip always has a little padding between the edges of its container                                                                                                                                                                                                                                                                                       |
-| `interactive`       | Boolean                             | `true`           | Wether the tooltip should be user-interactive                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `interactive`       | Boolean                             | `true`           | Whether the tooltip should be user-interactive                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `variant`           | String                              | `null`           | Contextual color variant for the tooltip                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `customClass`       | String                              | `null`           | A custom classname to apply to the tooltip outer wrapper element                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `id`                | String                              | `null`           | An ID to use on the tooltip root element. If none is provided, one will automatically be generated. If you do provide an ID, it _must_ be guaranteed to be unique on the rendered page                                                                                                                                                                                                                                                                                     |

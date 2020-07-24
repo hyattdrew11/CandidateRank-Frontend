@@ -36,9 +36,29 @@ Things to know when using popover component:
 - When triggered from hyperlinks that span multiple lines, popovers will be centered. Use
   `white-space: nowrap;` on your `<a>`s, `<b-link>`s and `<router-link>`s to avoid this behavior.
 
+## Target
+
+The target is the _trigger_ element (or component) that will trigger the popover. The target is
+specified via the `target` prop, and can be any of the following:
+
+- A string identifying the ID of the trigger element (or ID of the root element of a component)
+- A reference (ref) to an `HTMLElement` or an `SVGElement` (e.g. via `this.$refs.refName`)
+- A reference (ref) to a component that has either an `HTMLElement` or `SVGElement` as its root
+  element (e.g. via `this.$refs.refName`)
+- A function (callback) that returns a reference to an `HTMLElement` or `SVGElement`
+
+For more information on references, see the official
+[Vue documentation](https://vuejs.org/v2/api/#vm-refs).
+
+**Notes:**
+
 The target element **must** exist in the document before `<b-popover>` is mounted. If the target
 element is not found during mount, the popover will never open. Always place your `<b-popover>`
-component lower in the DOM than your target element.
+component lower in the DOM than your target element. This rule also applies if a callback function
+is used as target element, since that callback is called only once on mount.
+
+`HTMLElement` refers to standard HTML elements such as `<div>`, `<button>`, etc, while `SVGElement`
+refers to `<svg>` or supported child elements of SVGs.
 
 ## Positioning
 
@@ -149,6 +169,9 @@ Positioning is relative to the trigger element.
 
   <div class="clearfix"></div>
 </div>
+
+Refer to the [Popover directive](/docs/directives/popover/#positioning) documentation for live
+examples of positioning.
 
 ## Triggers
 
@@ -907,6 +930,11 @@ possible. When the popover is closed, you should return focus back to your trigg
 You may also want to implement focus containment in the popover content while the user is
 interacting with it (keeping focus inside the popover until it is closed by the user).
 
+**Note:** The animation effect of this component is dependent on the `prefers-reduced-motion` media
+query. See the
+[reduced motion section of our accessibility documentation](/docs/reference/accessibility) for
+additional details.
+
 ### Making popovers work for keyboard and assistive technology users
 
 To allow keyboard users to activate your popovers, you should only add them to HTML elements that
@@ -927,7 +955,7 @@ Additionally, while it is possible to also include interactive controls (such as
 links) in your popover, be aware that currently the popover does not manage keyboard focus order.
 When a keyboard user opens a popover, focus remains on the triggering element, and as the popover
 usually does not immediately follow the trigger in the document's structure, there is no guarantee
-that moving forward/pressing <kbd>TAB</kbd> will move a keyboard user into the popover itself. In
+that moving forward/pressing <kbd>Tab</kbd> will move a keyboard user into the popover itself. In
 short, simply adding interactive controls to a popover is likely to make these controls
 unreachable/unusable for keyboard users and users of assistive technologies, or at the very least
 make for an illogical overall focus order. **In these cases, consider using a `<b-modal>` dialog

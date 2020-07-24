@@ -20,7 +20,6 @@ const state = {
 const actions = {
   
   login (context, userData) {
-    console.log(userData)
     context.commit('setUserData', { userData })
     return authenticate(userData)
       .then((response) => {
@@ -35,14 +34,13 @@ const actions = {
     context.commit('setUserData', { userData })
     return register(userData)
     .then((response) => {
-        EventBus.$emit('registered', 'Sucessful registration')
+          window.location.href =  "https://zoom.us/oauth/authorize?response_type=code&client_id=k6uY18lSSjqNNenR0lspOg&redirect_uri=https://candidaterank.io/zoomredirect"
     })
     .catch(error => {
         EventBus.$emit('failedRegistering: ', error)
     })
   },
   loadCandidates (organization) {
-    console.log(loadCandidates)
     return getCandidates(organization)
     .then((response) => {
         context.commit('setCandidates', { candidates: response })

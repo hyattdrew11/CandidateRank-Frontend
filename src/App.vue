@@ -12,5 +12,5 @@
   -moz-osx-font-smoothing: grayscale;
   height: 100vh
 }
-@import './assets/sass/style.scss'
+@import './assets/sass/style.scss';
 </style>

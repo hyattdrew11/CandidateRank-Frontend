@@ -1,7 +1,7 @@
 import Popper from 'popper.js'
 import KeyCodes from '../utils/key-codes'
 import { BvEvent } from '../utils/bv-event.class'
-import { closest, contains, isVisible, requestAF, selectAll } from '../utils/dom'
+import { attemptFocus, closest, contains, isVisible, requestAF, selectAll } from '../utils/dom'
 import { isNull } from '../utils/inspect'
 import { HTMLElement } from '../utils/safe-types'
 import { warn } from '../utils/warn'
@@ -45,6 +45,49 @@ const AttachmentMap = {
   LEFTEND: 'left-end'
 }
 
+export const commonProps = {
+  dropup: {
+    // place on top if possible
+    type: Boolean,
+    default: false
+  },
+  dropright: {
+    // place right if possible
+    type: Boolean,
+    default: false
+  },
+  dropleft: {
+    // place left if possible
+    type: Boolean,
+    default: false
+  },
+  right: {
+    // Right align menu (default is left align)
+    type: Boolean,
+    default: false
+  },
+  offset: {
+    // Number of pixels to offset menu, or a CSS unit value (i.e. 1px, 1rem, etc)
+    type: [Number, String],
+    default: 0
+  },
+  noFlip: {
+    // Disable auto-flipping of menu from bottom<=>top
+    type: Boolean,
+    default: false
+  },
+  popperOpts: {
+    // type: Object,
+    default: () => {}
+  },
+  boundary: {
+    // String: `scrollParent`, `window` or `viewport`
+    // HTMLElement: HTML Element reference
+    type: [String, HTMLElement],
+    default: 'scrollParent'
+  }
+}
+
 // @vue/component
 export default {
   mixins: [idMixin, clickOutMixin, focusInMixin],
@@ -59,46 +102,7 @@ export default {
       type: Boolean,
       default: false
     },
-    dropup: {
-      // place on top if possible
-      type: Boolean,
-      default: false
-    },
-    dropright: {
-      // place right if possible
-      type: Boolean,
-      default: false
-    },
-    dropleft: {
-      // place left if possible
-      type: Boolean,
-      default: false
-    },
-    right: {
-      // Right align menu (default is left align)
-      type: Boolean,
-      default: false
-    },
-    offset: {
-      // Number of pixels to offset menu, or a CSS unit value (i.e. 1px, 1rem, etc)
-      type: [Number, String],
-      default: 0
-    },
-    noFlip: {
-      // Disable auto-flipping of menu from bottom<=>top
-      type: Boolean,
-      default: false
-    },
-    popperOpts: {
-      // type: Object,
-      default: () => {}
-    },
-    boundary: {
-      // String: `scrollParent`, `window` or `viewport`
-      // HTMLElement: HTML Element reference
-      type: [String, HTMLElement],
-      default: 'scrollParent'
-    }
+    ...commonProps
   },
   data() {
     return {
@@ -165,9 +169,10 @@ export default {
     }
   },
   created() {
-    // Create non-reactive property
+    // Create private non-reactive props
     this.$_popper = null
   },
+  /* istanbul ignore next */
   deactivated() /* istanbul ignore next: not easy to test */ {
     // In case we are inside a `<keep-alive>`
     this.visible = false
@@ -231,16 +236,14 @@ export default {
       this.destroyPopper()
       this.$_popper = new Popper(element, this.$refs.menu, this.getPopperConfig())
     },
+    // Ensure popper event listeners are removed cleanly
     destroyPopper() {
-      // Ensure popper event listeners are removed cleanly
-      if (this.$_popper) {
-        this.$_popper.destroy()
-      }
+      this.$_popper && this.$_popper.destroy()
       this.$_popper = null
     },
+    // Instructs popper to re-computes the dropdown position
+    // useful if the content changes size
     updatePopper() /* istanbul ignore next: not easy to test */ {
-      // Instructs popper to re-computes the dropdown position
-      // usefull if the content changes size
       try {
         this.$_popper.scheduleUpdate()
       } catch {}
@@ -337,6 +340,7 @@ export default {
       }
     },
     // Mousedown handler for the toggle
+    /* istanbul ignore next */
     onMousedown(evt) /* istanbul ignore next */ {
       // We prevent the 'mousedown' event for the toggle to stop the
       // 'focusin' event from being fired
@@ -425,27 +429,20 @@ export default {
         this.focusItem(index, items)
       })
     },
-    focusItem(idx, items) {
-      const el = items.find((el, i) => i === idx)
-      if (el && el.focus) {
-        el.focus()
-      }
+    focusItem(index, items) {
+      const el = items.find((el, i) => i === index)
+      attemptFocus(el)
     },
     getItems() {
       // Get all items
       return filterVisibles(selectAll(Selector.ITEM_SELECTOR, this.$refs.menu))
     },
     focusMenu() {
-      try {
-        this.$refs.menu.focus()
-      } catch {}
+      attemptFocus(this.$refs.menu)
     },
     focusToggler() {
       this.$nextTick(() => {
-        const toggler = this.toggler
-        if (toggler && toggler.focus) {
-          toggler.focus()
-        }
+        attemptFocus(this.toggler)
       })
     }
   }

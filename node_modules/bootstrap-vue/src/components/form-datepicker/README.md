@@ -3,13 +3,13 @@
 > `<b-form-datepicker>` is a BootstrapVue custom date picker input form control, which provides full
 > WAI-ARIA compliance and internationalization support.
 
+## Overview
+
 As a form control wrapper component for the [`<b-calendar>`](/docs/components/calendar) component,
 it provides additional validation state presentation and a compact interface. Native HTML5 date
 inputs vary in presentation, accessibility, and in some instances are not supported by all browsers.
 `<b-form-datepicker>` provides a consistent and accessible interface across all browser platforms
 and devices.
-
-The `<b-form-datepicker>` component was introduced in BootstrapVue release `v2.5.0`.
 
 ```html
 <template>
@@ -288,6 +288,10 @@ The text for the optional buttons can be set via the `label-today-button`, `labe
 the `label-close-button` props. Due to the limited width of the footer section, it is recommended to
 keep these labels short.
 
+Note that the `Set Today` button may not set the control today's date, if today's date is outside of
+the `min` or `max` date range restrictions. In the case it is outside of the range, it will set to
+either `min` or `max` (depending on which is closes to today's date).
+
 ### Dropdown placement
 
 Use the dropdown props `right`, `dropup`, `dropright`, `dropleft`, `no-flip`, and `offset` to
@@ -296,10 +300,219 @@ control the positioning of the popup calendar.
 Refer to the [`<b-dropdown>` documentation](/docs/components/dropdown) for details on the effects
 and usage of these props.
 
+### Initial open calendar date
+
+<span class="badge badge-info small">v2.7.0+</span>
+
+By default, when no date is selected, the calendar view will be set to the current month (or the
+`min` or `max` date if today's date is out of range of `min` or `max`) when opened. You can change
+this behaviour by specifying a date via the `initial-date` prop. The initial date prop will be used
+to determine the calendar month to be initially presented to the user. It does not set the
+component's value.
+
 ### Dark mode
 
 Want a fancy popup with a dark background instead of a light background? Set the `dark` prop to
 `true` to enable the dark background.
+
+### Optional decade navigation buttons
+
+Set the prop `show-decade-nav` to enable the previous and next decade buttons in the datepicker's
+date navigation toolbar.
+
+The props `label-prev-decade` and `label-next-decade` props can be used to provide custom label text
+for the decade buttons.
+
+For example usage, refer to the [Internationalization section](#internationalization) below.
+
+### Button only mode
+
+<span class="badge badge-info small">v2.7.0+</span>
+
+Fancy just a button that launches the date picker dialog, or want to provide your own optional text
+input field? Use the `button-only` prop to render the datepicker as a dropdown button. The formatted
+date label will be rendered with the class `sr-only` (available only to screen readers).
+
+In the following simple example, we are placing the datepicker (button only mode) as an append to a
+`<b-input-group>`, and we are using the `context` event to get the formatted date string and value:
+
+```html
+<template>
+  <div>
+    <label for="example-input">Choose a date</label>
+    <b-input-group class="mb-3">
+      <b-form-input
+        id="example-input"
+        v-model="value"
+        type="text"
+        placeholder="YYYY-MM-DD"
+        autocomplete="off"
+      ></b-form-input>
+      <b-input-group-append>
+        <b-form-datepicker
+          v-model="value"
+          button-only
+          right
+          locale="en-US"
+          aria-controls="example-input"
+          @context="onContext"
+        ></b-form-datepicker>
+      </b-input-group-append>
+    </b-input-group>
+    <p class="mb-1">Value: '{{ value }}'</p>
+    <p class="mb-1">Selected: '{{ selected }}'</p>
+    <p>Formatted: '{{ formatted }}'</p>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        value: '',
+        formatted: '',
+        selected: ''
+      }
+    },
+    methods: {
+      onContext(ctx) {
+        // The date formatted in the locale, or the `label-no-date-selected` string
+        this.formatted = ctx.selectedFormatted
+        // The following will be an empty string until a valid date is entered
+        this.selected = ctx.selectedYMD
+      }
+    }
+  }
+</script>
+
+<!-- b-form-datepicker-button-only.vue -->
+```
+
+Control the size of the button via the `size` prop, and the button variant via the `button-variant`
+prop.
+
+### Date string format
+
+<span class="badge badge-info small">v2.6.0+</span>
+
+To change format options of the displayed date text inside the component, e.g. in the header or
+placeholder, set the `date-format-options` prop to an object containing the requested format
+properties for the `Intl.DateTimeFormat` object (see also
+[Internationalization](#internationalization)).
+
+```html
+<template>
+  <div>
+    <label for="datepicker-dateformat1">Custom date format</label>
+    <b-form-datepicker
+      id="datepicker-dateformat1"
+      :date-format-options="{ year: 'numeric', month: 'short', day: '2-digit', weekday: 'short' }"
+      locale="en"
+    ></b-form-datepicker>
+
+    <label class="mt-3" for="datepicker-dateformat2">Short date format</label>
+    <b-form-datepicker
+      id="datepicker-dateformat2"
+      :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+      locale="en"
+    ></b-form-datepicker>
+  </div>
+</template>
+
+<!-- b-form-datepicker-dateformat.vue -->
+```
+
+The following table summarizes the valid options for each format property:
+
+| Property  | Possible values                                              |
+| --------- | ------------------------------------------------------------ |
+| `year`    | `'numeric'`, or `'2-digit'`                                  |
+| `month`   | `'numeric'`, `'2-digit'`, `'long'`, `'short'`, or `'narrow'` |
+| `day`     | `'numeric'`, or `'2-digit'`                                  |
+| `weekday` | `'long'`, `'short'`, or `'narrow'`                           |
+
+Notes:
+
+- Leaving out certain options may affect the formatted text string, e.g. the `weekday`
+- The formatted value will vary according to the resolved locale. Some locales may not support the
+  `'narrow'` format and will fall back to `'short'` or `long'` (if `'short'` is not available)
+- `year`, `month` and `day` will always be shown. If you need to leave out a value, set the property
+  to `undefined`, although this is highly discouraged for accessibility reasons
+
+### Weekday name header format
+
+<span class="badge badge-info small">2.12.0+</span>
+
+The calendar weekday name header format defaults to `'short'`, which is typically a three-character
+abbreviation of the weekday, although some [locales](#internationalization) may override this. The
+format can be controlled via the prop `weekday-header-format` and accepts one of three values:
+
+- `'long'` the full weekday name (e.g. <samp>Tuesday</samp>). Handy when using a full width
+  calendar. Avoid using with the default calendar width.
+- `'short'` typically is a 2 or 3 letter abbreviation of the weekday name, depending on the selected
+  locale (e.g. "Tue").
+- `'narrow'` is typically a single character abbreviation (e.g., <samp>T</samp>). Two weekdays may
+  have the same narrow style for some locales (e.g. Tuesday and Thursday's narrow style are both
+  <samp>T</samp>). This can be handy for those locales that do not support the `'short'` format,
+  such as locales `'ar'` and `'fa'`.
+
+### Date navigation button slots
+
+<span class="badge badge-info small">2.12.0+</span>
+
+To change the content of the calendar's date navigation buttons, BootstrapVue provides scoped slots
+for each button:
+
+- `'nav-prev-decade'`
+- `'nav-prev-year'`
+- `'nav-prev-month'`
+- `'nav-this-month'` (the go to selected/today button)
+- `'nav-next-month'`
+- `'nav-next-year'`
+- `'nav-next-decade'`
+
+All seven slots have the same scoped property available:
+
+| Property | Type    | Description                                                           |
+| -------- | ------- | --------------------------------------------------------------------- |
+| `isRTL`  | Boolean | Will be `true` when the date navigation bar is rendered right-to-left |
+
+You can use the `isRTL` scoped property to "flip" the prev vs next button content to handle the
+left-to-right to right-to-left orientation change &mdash; i.e. the previous year button will be on
+the right when `isRTL` is `true`, instead of the left.
+
+### Full width calendar dropdown
+
+To create a full width calendar dropdown (where the width matches the input width), simply set the
+`menu-class` prop to `'w-100'` and set the `calendar-width` prop to `'100%'`:
+
+```html
+<template>
+  <div>
+    <label for="datepicker-full-width">Choose a date</label>
+    <b-form-datepicker
+      id="datepicker-full-width"
+      v-model="value"
+      menu-class="w-100"
+      calendar-width="100%"
+      class="mb-2"
+    ></b-form-datepicker>
+    <p>Value: '{{ value }}'</p>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        value: ''
+      }
+    }
+  }
+</script>
+
+<!-- b-form-datepicker-full-width.vue -->
+```
 
 ## Internationalization
 
@@ -307,7 +520,7 @@ Internationalization of the date picker's calendar is provided via
 [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat),
 except for labels applied to elements of the calendar control (aria-labels, selected status, and
 help text). You must provide your own translations for these labels. The available locales will be
-browser dependant (not all browsers support all locales)
+browser dependent (not all browsers support all locales)
 
 By default `<b-form-datepicker>` will use the browser's default locale, but you can specify the
 locale (or locales) to use via the `locale` prop. The prop accepts either a single locale string, or
@@ -326,6 +539,16 @@ Saturday.
     <label for="example-weekdays">Start weekday:</label>
     <b-form-select id="example-weekdays" v-model="weekday" :options="weekdays" class="mb-2"></b-form-select>
 
+    <div>
+      <b-form-checkbox v-model="showDecadeNav" switch inline class="my-2">
+        Show decade navigation buttons
+      </b-form-checkbox>
+
+      <b-form-checkbox v-model="hideHeader" switch inline class="my-2">
+        Hide calendar header
+      </b-form-checkbox>
+    </div>
+
     <label for="example-i18n-picker">Date picker:</label>
     <b-form-datepicker
       id="example-i18n-picker"
@@ -333,6 +556,8 @@ Saturday.
       v-bind="labels[locale] || {}"
       :locale="locale"
       :start-weekday="weekday"
+      :show-decade-nav="showDecadeNav"
+      :hide-header="hideHeader"
       class="mb-2"
      ></b-form-datepicker>
      <p>Value: <b>'{{ value }}'</b></p>
@@ -345,6 +570,8 @@ Saturday.
       return {
         value: '',
         locale: 'en-US',
+        showDecadeNav: false,
+        hideHeader: false,
         locales: [
           { value: 'en-US', text: 'English US (en-US)' },
           { value: 'de', text: 'German (de)' },
@@ -359,11 +586,13 @@ Saturday.
         ],
         labels: {
           de: {
+            labelPrevDecade: 'Vorheriges Jahrzehnt',
             labelPrevYear: 'Vorheriges Jahr',
             labelPrevMonth: 'Vorheriger Monat',
             labelCurrentMonth: 'Aktueller Monat',
             labelNextMonth: 'Nächster Monat',
             labelNextYear: 'Nächstes Jahr',
+            labelNextDecade: 'Nächstes Jahrzehnt',
             labelToday: 'Heute',
             labelSelected: 'Ausgewähltes Datum',
             labelNoDateSelected: 'Kein Datum gewählt',
@@ -372,11 +601,14 @@ Saturday.
             labelHelp: 'Mit den Pfeiltasten durch den Kalender navigieren'
           },
           'ar-EG': {
+            weekdayHeaderFormat: 'narrow',
+            labelPrevDecade: 'العقد السابق',
             labelPrevYear: 'العام السابق',
             labelPrevMonth: 'الشهر السابق',
             labelCurrentMonth: 'الشهر الحالي',
             labelNextMonth: 'الشهر المقبل',
             labelNextYear: 'العام المقبل',
+            labelNextDecade: 'العقد القادم',
             labelToday: 'اليوم',
             labelSelected: 'التاريخ المحدد',
             labelNoDateSelected: 'لم يتم اختيار تاريخ',
@@ -385,11 +617,14 @@ Saturday.
             labelHelp: 'استخدم مفاتيح المؤشر للتنقل في التواريخ'
           },
           zh: {
+            weekdayHeaderFormat: 'narrow',
+            labelPrevDecade: '过去十年',
             labelPrevYear: '上一年',
             labelPrevMonth: '上个月',
             labelCurrentMonth: '当前月份',
             labelNextMonth: '下个月',
             labelNextYear: '明年',
+            labelNextDecade: '下一个十年',
             labelToday: '今天',
             labelSelected: '选定日期',
             labelNoDateSelected: '未选择日期',
@@ -418,7 +653,7 @@ The popup calendar supports the same
 [keyboard controls as `<b-calendar>`](/docs/components/calendar#accessibility), along with the
 following:
 
-- <kbd>ESC</kbd> will close the popup calendar without selecting a date
+- <kbd>Esc</kbd> will close the popup calendar without selecting a date
 
 When internationalizing the datepicker, it is important to also update the `label-*` props with
 appropriate translated strings, so that international screen reader users will hear the correct
@@ -432,12 +667,13 @@ details.
 `<b-form-datepicker>` is based upon the components [`<b-calendar>`](/docs/components/calendar) and
 [`<b-dropdown>`](/docs/components/dropdown).
 
-`<b-form-datepicker>` uses Bootstrap's margin, padding, border, and flex utility classes, along with
-button (`btn-*`) classes, and the `form-control*` (plus validation) classes.
-
+`<b-form-datepicker>` uses Bootstrap's border and flex utility classes, along with button (`btn-*`)
+classes, dropdown (`dropdown*`) classes, and the `form-control*` (plus validation) classes.
 BootstrapVue's Custom SCSS/CSS is also required for proper styling of the date picker and calendar.
 
 ## See also
 
+- [`<b-form-timepicker>` Time picker custom form input](/docs/components/form-timepicker)
 - [`<b-calendar>` Calendar date selection widget](/docs/components/calendar)
+- [`<b-time>` Time selection widget](/docs/components/time)
 - [`<b-dropdown>` Dropdown component](/docs/components/dropdown)

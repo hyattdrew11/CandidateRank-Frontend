@@ -1,7 +1,7 @@
 <!-- components/Login.vue -->
 <template>
   <div>
-    <Navigation />
+    <img height="135" class="login-logo" src="cr-logo-white.png" />
     <div class="container-fluid">
       <b-row id="login" align-v="center" align-h="center"  no-gutters>
         <b-col sm="12" md="4" lg="4">
@@ -27,17 +27,17 @@
           </b-form-group>
             <hr />
             <p v-if="errorMsg" class="tx-12 red wt-600">{{ errorMsg }}</p>
-            <router-link class="tx-12 gray mr-2" :to="{ name: 'Login'}">
+            <router-link class="tx-14 wt-500 gray mr-2" :to="{ name: 'Home'}">
                 <!-- <i class="fa fa-question-circle"></i> -->
-                • Help
+                &bull; Home
                 </router-link>
-                <router-link class="tx-12 gray mr-2" :to="{ name: 'Register'}">
+                <!-- <router-link class="tx-12 gray mr-2" :to="{ name: 'Register'}"> -->
                 <!-- <i class="fa fa-user"></i> -->
-                • Register
-                </router-link>
-            <b-button size="sm" class="mr-1 float-right" variant="primary" @click="authenticate">Login</b-button>
+                <!-- • Register -->
+                <!-- </router-link> -->
+            <b-button size="sm" class="mr-1 float-right bg-green white" variant="outline-secondary" @click="authenticate">Login</b-button>
           </b-card>
-           <router-link class="tx-10 gray float-right mt-2" :to="{ name: 'Terms'}">
+           <router-link class="tx-12 white float-right mt-2" :to="{ name: 'Terms'}">
             <!-- <i class="fa fa-info-circle"></i> -->
           • Terms of service
           </router-link>
@@ -65,7 +65,7 @@ export default {
   methods: {
     authenticate () {
       this.$store.dispatch('login', { email: this.email, password: this.password })
-      .then(() => this.$router.push('/'))
+      .then(() => this.$router.push('/dashboard'))
     }
   },
   mounted () {
@@ -78,4 +78,10 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style scoped lang="scss">
+  .login-logo {
+    position: fixed;
+    top: 25px;
+    left: 30px;
+}
+</style>
