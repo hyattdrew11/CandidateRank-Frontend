@@ -5,52 +5,14 @@
       <b-row>
         <b-col md="12">
           <b-card>
-    		    <h1 class="mb-0  wt-400">Candidate Rank Documentation</h1>
+    		    <h1 class="mb-0  wt-400">Candidate Rank Learning</h1>
             <hr />
             <b-row>
               <b-col md="5">
                 <p>
-                  Candidate rank is a specialized application for medical staff to screen and interview incoming doctors. Candidate Rank allows you to import ERAS candidate data and coordiante vitrual interviews.  Users can also create surveys to coincide with virtual meetings to score candidates. 
+                  Candidate rank is a specialized application for medical staff to screen and interview incoming doctors. Candidate Rank allows you to import ERAS of SF Match candidate data and coordiante vitrual interviews.  Users can also create surveys to coincide with virtual meetings to score candidates. 
                 </p>
-              </b-col>
-              <b-col md="7">
-                <span>ADD AN IMAGE HERE</span>
-                <!-- <img  /> -->
-              </b-col>
-              <b-col md="5">
-                 <h2 class="mb-0  wt-400">Register</h2>
-              </b-col>
-               <b-col md="7">
-                <span>ADD AN IMAGE HERE</span>
-                <!-- <img  /> -->
-              </b-col>
-                <b-col md="5">
-                 <h2 class="mb-0  wt-400">Login</h2>
-              </b-col>
-               <b-col md="7">
-                <span>ADD AN IMAGE HERE</span>
-                <!-- <img  /> -->
-              </b-col>
-                <b-col md="5">
-                 <h2 class="mb-0  wt-400">Create Interview Term</h2>
-              </b-col>
-               <b-col md="7">
-                <span>ADD AN IMAGE HERE</span>
-                <!-- <img  /> -->
-              </b-col>
-                <b-col md="5">
-                 <h2 class="mb-0  wt-400">Create Virutal Room</h2>
-              </b-col>
-               <b-col md="7">
-                <span>ADD AN IMAGE HERE</span>
-                <!-- <img  /> -->
-              </b-col>
-                <b-col md="5">
-                 <h2 class="mb-0  wt-400">Add Evaluator</h2>
-              </b-col>
-               <b-col md="7">
-                <span>ADD AN IMAGE HERE</span>
-                <!-- <img  /> -->
+                <a class="btn btn-success" href="/register">Get started</a>
               </b-col>
             </b-row>
 

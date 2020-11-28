@@ -12,9 +12,9 @@ import moment from 'moment'
 import VueProgressBar from 'vue-progressbar'
 import draggable from "vuedraggable";
 import axios from 'axios';
-import "ag-grid-enterprise";
-import {LicenseManager} from "ag-grid-enterprise";
-LicenseManager.setLicenseKey("Evaluation_License-_Not_For_Production_Valid_Until_23_July_2019__MTU2MzgzNjQwMDAwMA==870f7edafb7c5f1ab4ea3e323377ea2a");
+// import "ag-grid-enterprise";
+// import {LicenseManager} from "ag-grid-enterprise";
+// LicenseManager.setLicenseKey("Evaluation_License-_Not_For_Production_Valid_Until_23_July_2019__MTU2MzgzNjQwMDAwMA==870f7edafb7c5f1ab4ea3e323377ea2a");
 
 Vue.config.productionTip = false;
 

@@ -1,0 +1,88 @@
+import Vue from "vue";
+
+export default Vue.extend({
+    template: `
+    <div class="">
+        <b-button 
+            class="mt-2 tx-10"
+            variant="success"
+            size="sm"
+            @click="viewApplication()" 
+            v-if="params.node.data.application">
+            Application
+        </b-button>
+         <b-button
+            v-if="!params.context.componentParent.currentTerm['Interview']"
+
+            :disabled="!params.context.componentParent.currentTerm['Interview']"
+            class="mt-2  tx-10"
+            variant="primary"
+            size="sm">
+            Survey
+        </b-button>
+        <b-button
+            v-if="params.context.componentParent.currentTerm['Interview']"
+
+            class="mt-2  tx-10"
+            variant="primary"
+            size="sm"
+            @click="openSurvey()">
+            Survey
+        </b-button>
+        <b-button 
+            v-if="!params.node.data.invited"
+            class="mt-2  tx-10"
+            variant="secondary"
+            @click="notifyCandidate()"
+            size="sm">
+            Invite
+        </b-button>
+         <b-button 
+            v-if="params.node.data.invited"
+            class="mt-2  tx-10"
+            variant="warning"
+            @click="notifyCandidate()"
+            size="sm">
+            Resend Invite
+        </b-button>
+         <b-button 
+            class="mt-2  tx-10"
+            variant="secondary"
+            @click="updateStatus()"
+            size="sm">
+            Status
+        </b-button>
+
+    </div>
+    `,
+    data: function () {
+        return {
+            imagePath: null,
+        };
+    },
+    mounted() {
+    },
+    methods: {
+        openSurvey() {
+            let candidate   = this.params.node.data
+            let survey      = this.params.context.componentParent.currentTerm['Interview']
+            this.params.context.componentParent.startSurvey(candidate, survey)
+        },
+        deleteCandidate() {
+            alert("Delete Candidate")
+        },
+        viewApplication() {
+            this.params.context.componentParent.viewApplication(this.params.node.data)
+        },
+        updateStatus() {
+            this.params.context.componentParent.updateStatus(this.params.node.data)
+        },
+         notifyCandidate() {
+            this.params.context.componentParent.notifyCandidate(this.params.node.data)
+        },
+        uploadApp() {
+            alert("Upload Candidate PDF")
+            // this.params.context.componentParent.uploadApp()
+        }
+    }
+});

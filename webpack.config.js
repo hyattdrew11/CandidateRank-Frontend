@@ -1,4 +1,5 @@
 module: {
+    devServer: {  http2: true },
     loaders: [
       {
         test: /\.vue$/,

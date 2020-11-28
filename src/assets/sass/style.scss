@@ -64,6 +64,7 @@ a {
 .lower { text-transform: lowercase; }
 
 // COLORS 
+.themeGreen     { color: #319c90!important;              }
 .white          { color: #FFF!important;              }
 .black          { color: #000!important;              }
 .yellow         { color: yellow;            }
@@ -341,6 +342,8 @@ a {
     overflow: auto;
     height: 400px;
   }
+
+  // GRID STUFF
   .grid-pic {
     height: 30px;
     width: 30px;
@@ -349,3 +352,65 @@ a {
     float: left;
     margin-right: 16px;
   }
+  .actions {
+    width: 100%;
+    padding: 15px 0px 15px 0px;
+  }
+  .btn-grid-action {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    display: block;
+    margin: 5px 0px 5px 0px;
+    text-align: center;
+}
+
+#pdf-container { 
+    min-height: 85vh;
+    height: 100%;
+    width: 100%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    padding: 30px 15px 20px 15px;
+    overflow-x: hidden;
+  }
+  #application-container, #pi-survey-container {
+    display: block;
+    background-color: #FFF;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 10px 25px 10px 25px;
+  }
+  #pdf-app-tools {
+    position: fixed;
+    width: 96.5%;
+    z-index: 3000;
+    background-color: #EEE;
+    left: 25px;
+    top: 144px;
+    height: 35px;
+    padding: 5px 15px 5px 15px;
+  }
+
+@import "~ag-grid-community/src/styles/ag-grid.scss";
+@import "~ag-grid-community/src/styles/ag-theme-material/sass/ag-theme-material-mixin";
+
+.ag-theme-material {
+    @include ag-theme-material((
+        // use theme parameters where possible
+        material-active-color: #319c90
+    ));
+}
+.ag-theme-material .ag-ltr .ag-has-focus .ag-cell-focus:not(.ag-cell-range-selected), .ag-theme-material .ag-ltr .ag-has-focus .ag-cell-focus.ag-cell-range-single-cell, .ag-theme-material .ag-ltr .ag-cell-range-single-cell.ag-cell-range-handle, .ag-theme-material .ag-rtl .ag-has-focus .ag-cell-focus:not(.ag-cell-range-selected), .ag-theme-material .ag-rtl .ag-has-focus .ag-cell-focus.ag-cell-range-single-cell, .ag-theme-material .ag-rtl .ag-cell-range-single-cell.ag-cell-range-handle {
+    border-color: #17a2b8!important;
+}
+.ag-theme-material .ag-tab-selected {
+    border-bottom-color: #17a2b8!important;
+}
+.ag-theme-material .ag-checkbox-input-wrapper.ag-checked::after {
+    color: #17a2b8!important;
+}

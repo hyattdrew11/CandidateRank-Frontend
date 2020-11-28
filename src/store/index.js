@@ -5,10 +5,14 @@ import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate";
 
 // imports of AJAX functions will go here
-import { authenticate, register, getCandidates } from '@/api'
+import { authenticate, authenticateAS, register, getCandidates } from '@/api'
 import { isValidJwt, EventBus } from '@/utils'
 
 Vue.use(Vuex)
+
+const redirUrl = "https://candidaterank.io/zoomredirect"
+
+// const redirUrl = "http://localhost:8080/zoomredirect"
 
 const state = {
   user : null,
@@ -18,26 +22,65 @@ const state = {
 }
 
 const actions = {
-  
+   loginAS (context, userData) {
+    console.log(context, userData)
+    context.commit('setUserData', { userData })
+    return authenticateAS(userData)
+      .then((response) => {
+        console.log(response)
+        context.commit('setJwtToken', { jwt: response.data })
+        EventBus.$emit('authenticated', 'Sucessful login')
+        window.open("/dashboard", '_blank');
+        // window.location.href =  "/dashboard"
+        // if(response.data.error == "auth-zoom") {
+        //   context.commit('setJwtToken', { jwt: response.data.token })
+
+        //   window.location.href =  "https://zoom.us/oauth/authorize?response_type=code&client_id=k6uY18lSSjqNNenR0lspOg&redirect_uri=" + redirUrl
+        // }
+        // else {
+        //   context.commit('setJwtToken', { jwt: response.data })
+        //   EventBus.$emit('authenticated', 'Sucessful login')
+        //   window.location.href =  "/dashboard"
+        // }
+      })
+      .catch(error => {
+        EventBus.$emit('failedAuthentication', 'Error logging in please check your email and password then try again.')
+      })
+  },
   login (context, userData) {
+    console.log(context, userData)
     context.commit('setUserData', { userData })
     return authenticate(userData)
       .then((response) => {
+        console.log(response)
         context.commit('setJwtToken', { jwt: response.data })
         EventBus.$emit('authenticated', 'Sucessful login')
+        window.location.href =  "/dashboard"
+        // if(response.data.error == "auth-zoom") {
+        //   context.commit('setJwtToken', { jwt: response.data.token })
+
+        //   window.location.href =  "https://zoom.us/oauth/authorize?response_type=code&client_id=k6uY18lSSjqNNenR0lspOg&redirect_uri=" + redirUrl
+        // }
+        // else {
+        //   context.commit('setJwtToken', { jwt: response.data })
+        //   EventBus.$emit('authenticated', 'Sucessful login')
+        //   window.location.href =  "/dashboard"
+        // }
       })
       .catch(error => {
-        EventBus.$emit('failedAuthentication', 'Error logging in please try again.')
+        EventBus.$emit('failedAuthentication', 'Error logging in please check your email and password then try again.')
       })
   },
   register (context, userData) {
     context.commit('setUserData', { userData })
     return register(userData)
     .then((response) => {
-          window.location.href =  "https://zoom.us/oauth/authorize?response_type=code&client_id=k6uY18lSSjqNNenR0lspOg&redirect_uri=https://candidaterank.io/zoomredirect"
+        alert("Registration Successful")
+        window.location.href =  "/login"
     })
     .catch(error => {
-        EventBus.$emit('failedRegistering: ', error)
+      alert("Error registering, please try again.")
+      EventBus.$emit('failedRegistering: ', error)
     })
   },
   loadCandidates (organization) {
@@ -53,12 +96,15 @@ const mutations = {
     state.candidates = payload.candidates
   },
   setUserData (state, payload) {
+    console.log(state, payload)
     state.user = payload.userData
-    localStorage.user = payload.userData
+    localStorage.user = JSON.stringify(payload.userData)
+    console.log(localStorage.user)
   },
   setJwtToken (state, payload) {
+    console.log(state, payload)
     localStorage.token = payload.jwt.token
-    localStorage.user = payload.jwt.token.user
+    localStorage.user = JSON.stringify(state.user)
     state.jwt = payload.jwt
     state.user = payload.jwt.token.user
   }

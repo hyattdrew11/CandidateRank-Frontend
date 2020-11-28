@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<Navigation />
     <i id="loader" v-if="loading" class="fa fa-spinner fa-pulse fa-3x fa-fw text-info" aria-hidden="true"></i>
 		<h1 class="mb-0 p-4 tx-18 wt-400">Zoom Authentication</h1>
+    <p>{{ message }}</p>
 	</div>
 </template>
 
@@ -16,8 +16,9 @@ export default {
   data () {
     return {
       zoom_code: this.$route.query.code,
-      email: null,
+      email: this.$route.query.state,
       loading: true,
+      message: "",
 
     }
   },
@@ -26,12 +27,17 @@ export default {
     axios
   },
   mounted() {
+    // console.log(localStorage.user)
+    // let user = JSON.parse(localStorage.user)
+    // this.email = user.email
     this.checkZoomCode(this.zoom_code)
   },
   methods: {
     checkZoomCode(code) {
       if(code == undefined) {
         // REDIRECT TO HOME
+        alert("There seems to be a problem with Zoom. Please go back to Candidate Rank and try again.")
+        this.$router.push('/dashboard')
       }
       else {
         this.authenticateZoom()
@@ -39,28 +45,21 @@ export default {
     },
     authenticateZoom() {
       let input = {
-        code: this.zoom_code,
-        email: this.email
+        "code": this.zoom_code,
+        "email": this.email
       }
       axios.post( API_URL+'/auth/zoom_authentication/', input)
           .then(({ data }) => { 
-            alert("Zoom authenication successful. You will be redirected to login to Candidate Rank.")
-            this.$router.push('/dashboard')
+            this.loading = false
+            this.$router.push('/login')
           })
           .catch(function (e) { 
             console.log(e) 
-            alert("Error connecting to Zoom, please tray again.")
-            window.location.href =  "https://zoom.us/oauth/authorize?response_type=code&client_id=k6uY18lSSjqNNenR0lspOg&redirect_uri=https://candidaterank.io/zoomredirect"
+            this.loading = true
+            this.message = e
+            alert("There seems to be a problem with Zoom. Please go back to Candidate Rank and try again.")
+            this.$router.push('/dashboard')
           })
-      /* AXIOS POST code TO SERVER TO GET ACCESS TOKEN FROM ZOOM
-         SERVER WILL FIRST TRY OT AUTHENTICATE WITH ZOOM 
-          IF SUCCESS THEN CHECK IF THIS USER IS IN OUR DB 
-            IF USER IS IN DB LOG THEM IN 
-            ELSE CREATE A NEW USER AND ORGANIZATION AND THEN LOG THEM IN 
-          ELSE IS FAILURE
-            ALERT AN ERROR AND TRY AUTH AGAIN
-      */
-
     },
     login() {}
 

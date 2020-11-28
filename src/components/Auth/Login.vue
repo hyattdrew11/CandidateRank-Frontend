@@ -27,20 +27,20 @@
           </b-form-group>
             <hr />
             <p v-if="errorMsg" class="tx-12 red wt-600">{{ errorMsg }}</p>
-            <router-link class="tx-14 wt-500 gray mr-2" :to="{ name: 'Home'}">
+                <router-link class="tx-14 wt-500 gray mr-2" :to="{ name: 'Home'}">
                 <!-- <i class="fa fa-question-circle"></i> -->
                 &bull; Home
                 </router-link>
-                <!-- <router-link class="tx-12 gray mr-2" :to="{ name: 'Register'}"> -->
-                <!-- <i class="fa fa-user"></i> -->
-                <!-- • Register -->
-                <!-- </router-link> -->
+               <!--  <router-link class="tx-14 wt-500 gray mr-2" :to="{ name: 'Register'}">
+                • Sign Up
+                </router-link> -->
             <b-button size="sm" class="mr-1 float-right bg-green white" variant="outline-secondary" @click="authenticate">Login</b-button>
           </b-card>
-           <router-link class="tx-12 white float-right mt-2" :to="{ name: 'Terms'}">
+           <router-link class="tx-12 white float-left mt-2 ml-1" :to="{ name: 'Terms'}">
             <!-- <i class="fa fa-info-circle"></i> -->
-          • Terms of service
+          Terms of service
           </router-link>
+          <router-link class="tx-12 white float-right mt-2" :to="{ name: 'Reset'}">&bull; Reset password  </router-link>
         </b-col>
       </b-row>
     </div>
@@ -65,16 +65,11 @@ export default {
   methods: {
     authenticate () {
       this.$store.dispatch('login', { email: this.email, password: this.password })
-      .then(() => this.$router.push('/dashboard'))
     }
   },
   mounted () {
-    EventBus.$on('authenticated', (msg) => { this.$router.push('/') })
     EventBus.$on('failedAuthentication', (msg) => { this.errorMsg = msg })
   },
-  beforeDestroy () {
-    EventBus.$off('failedAuthentication')
-  }
 }
 </script>
 

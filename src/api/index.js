@@ -5,7 +5,9 @@ const API_URL = process.env.VUE_APP_API_URL
 export function authenticate (userData) {
   return axios.post(`${API_URL}/auth/login/`, userData)
 }
-
+export function authenticateAS (userData) {
+  return axios.post(`${API_URL}/auth/login/as`, userData)
+}
 export function register (userData) {
   return axios.post(`${API_URL}/auth/register/`, userData)
 }
