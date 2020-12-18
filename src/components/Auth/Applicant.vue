@@ -37,7 +37,6 @@
            </b-col>
         </b-row>
          <b-row v-if="showDashboard" id="applicant-dashboard"  align-h="center"  no-gutters>
-          <!-- <pre>{{ me }}</pre> -->
           <b-col sm="12" md="12" lg="12">
              <b-card>
                <h5>
@@ -50,7 +49,7 @@
                     Reschedule
                 </b-button>
               </h5>
-              <h5 class="text-center">{{ organization.name.toUpperCase() }}</h5>
+              <h5 class="text-center">{{ organization.name.toUpperCase() }} • {{ department.toUpperCase() }}</h5>
               <hr />
 
               <div v-if="'interview-date' in me || dateFinalized" class="idinme">
@@ -129,6 +128,7 @@ import moment from 'moment';
 export default {
   data () {
     return {
+      department: '',
       dateFinalized: false,
       waitingRoom: false,
       email: '',
@@ -153,13 +153,17 @@ export default {
         let x
         let candidates = this.candidates
         for(x in candidates) {
-          console.log(x)
           if(
               candidates[x].email == this.email && candidates[x].Organization == this.organization.name || 
               candidates[x]['E-Mail'] == this.email && candidates[x].Organization == this.organization.name
             ) {
             this.candidate = candidates[x]
           }
+        }
+        for(x in this.organization.terms) {
+           if(this.candidate['Rank-Term'] == this.organization.terms[x].year){ 
+            this.department = this.organization.terms[x].department
+           }
         }
         return this.candidate
       },
@@ -173,10 +177,12 @@ export default {
           let dates = []
           if(terms) {
             for(x in terms) {
-              if ('dates' in terms[x]) {
-                for(i in terms[x].dates) {
-                  terms[x].dates[i].currentTermIndex = x
-                  dates.push(terms[x].dates[i])
+              if(this.me['Rank-Term'] == terms[x].year){
+                if ('dates' in terms[x]) {
+                  for(i in terms[x].dates) {
+                    terms[x].dates[i].currentTermIndex = x
+                    dates.push(terms[x].dates[i])
+                  }
                 }
               }
             }
@@ -193,7 +199,6 @@ export default {
             for(x in terms) {
               let dates = terms[x].dates
               for(x in dates) {
-                console.log(dates[x])
                 let rooms = dates[x].rooms
                 let r
                 for(r in rooms) {

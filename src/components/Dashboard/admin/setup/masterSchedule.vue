@@ -300,6 +300,7 @@ export default {
         const range = moment.range(S, F);
         const minutes = Array.from(range.by('minutes', { excludeEnd: false, step: this.currentDay.interviewLength }));
         this.interviewTimes = minutes.map(m => m.format('HH:mm'))
+        console.log(this.interviewTimes)
         return this.interviewTimes
       },
     updateOrganization() {

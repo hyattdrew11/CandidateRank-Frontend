@@ -26,7 +26,7 @@
         </b-row>
       </b-container>
       <div class="table-responsive tableFixHead">
-        <table v-if="currentDay.rooms" class="table table-bordered">
+        <table v-if="currentDay.rooms.length > 0" class="table table-bordered">
           <thead>
             <tr>
               <th scope="col" style="width: 200px;" class="">Rooms</th>
@@ -108,7 +108,7 @@ export default {
    watch: {
      candidates: function(newVal, oldVal) {
       if(newVal) {
-        console.log(newVal)
+        // console.log(newVal)
          // let SC = newVal.sort(function(a, b) {
          //    if(a['Applicant Name'] < b['Applicant Name'] ) { return -1 }
          //    if(a['Applicant Name'] > b['Applicant Name']) { return 1  }
@@ -121,11 +121,11 @@ export default {
       currentTerm: function(newVal, oldVal) {
         if(newVal) {
           console.log("NEW CURRENT TERM")
-          // console.log(newVal)
           if(newVal != undefined) {
             this.year = newVal.year
             this.interviewDates = newVal.dates
             this.currentDay =  newVal.dates[this.CDI]
+            console.log(this.currentDay)
             // this.CDI = 0
           }
         }
