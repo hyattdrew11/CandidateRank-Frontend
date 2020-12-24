@@ -1,10 +1,9 @@
-// utils/index.js
 
 import Vue from 'vue'
 
 export const EventBus = new Vue()
 
-export function isValidJwt (jwt) {
+export function isValidJwt(jwt) {
   if (!jwt.token || jwt.token.split('.').length < 3) {
     return false
   }
