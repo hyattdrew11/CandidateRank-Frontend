@@ -1,13 +1,14 @@
-module: {
-    devServer: {  http2: true },
+module.exports = {
+  module: {
+    devServer: { http2: true },
     loaders: [
       {
         test: /\.vue$/,
         loader: 'vue'
-      }, 
+      },
       {
-          test: /\.s[a|c]ss$/,
-          loader: 'style!css!sass'
+        test: /\.s[a|c]ss$/,
+        loader: 'style!css!sass'
       }
     ]
   },
@@ -16,3 +17,4 @@ module: {
       scss: 'style!css!sass'
     }
   }
+}

@@ -1,3 +1,4 @@
+
 <template>
   <div id="app">
     <vue-progress-bar></vue-progress-bar>
@@ -12,6 +13,4 @@
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
 }
-
-@import "./assets/sass/style.scss";
 </style>
