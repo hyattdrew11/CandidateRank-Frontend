@@ -3,7 +3,7 @@
   <div>
     <i id="loader" v-if="loading" class="fa fa-spinner fa-pulse fa-3x fa-fw text-info" aria-hidden="true"></i>
     <div :class="{fade : loading }">
-      <img height="135" class="login-logo" src="cr-logo-white.png" />
+      <img height="135" class="login-logo" src="img/logo/cr-logo-white.png" />
       <div class="container-fluid">
         <b-row id="login" align-v="center" align-h="center"  no-gutters>
           <b-col sm="12" md="4" lg="4">

@@ -14,9 +14,9 @@
             md="12"
             id="home-header"
             class="text-center pt-4"
-            style="background-image: url('img/header.jpg')"
+            style="background-image: url('img/background/header.jpg')"
           >
-            <img height="175" class="" src="cr-logo-white.png" />
+            <img height="175" class="" src="img/logo/cr-logo-white.png" />
             <h1 id="tagline" class="white">CandidateRank</h1>
             <h3 class="white">
               FULLY AUTOMATED & INTEGRATED RESIDENT <br />
@@ -49,7 +49,7 @@
             <span class="step-num">1</span>
             <div class="step">
               <h4 class="mt-0">AUTOMATED PAPERLESS SOLUTION</h4>
-              <img src="img/step-1.jpg" class="img-fluid mb-2" />
+              <img src="img/step/step-1.jpg" class="img-fluid mb-2" />
               <p>
                 CandidateRank is the only software vendor on the market that
                 takes your entire manual interview process and provides a
@@ -62,7 +62,7 @@
             <span class="step-num">2</span>
             <div class="step">
               <h4 class="mt-0">FULLY INTEGRATED</h4>
-              <img src="img/step-2.jpg" class="img-fluid mb-2" />
+              <img src="img/step/step-2.jpg" class="img-fluid mb-2" />
               <p>
                 Helping you to become more efficient. Our fully integrated
                 solution works with your current residency/fellowship
@@ -76,7 +76,7 @@
             <span class="step-num">2</span>
             <div class="step">
               <h4 class="mt-0">SAVES TIME & MONEY</h4>
-              <img src="img/step-3.jpg" class="img-fluid mb-2" />
+              <img src="img/step/step-3.jpg" class="img-fluid mb-2" />
               <p>
                 CandidateRank creates value by freeing up staff and faculty
                 time, and objectively helps manage the integrity of your data
@@ -94,7 +94,7 @@
       </div>
       <b-container fluid class="">
         <b-row no-gutters>
-          <img src="img/step-guide.png" class="step-guide" />
+          <img src="img/step/step-guide.png" class="step-guide" />
         </b-row>
       </b-container>
       <div class="steps-header"></div>
