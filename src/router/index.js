@@ -1,20 +1,22 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Home from '../components/Home/Index.vue';
-import Dashboard from '../components/Dashboard/index.vue';
-// import EvaluatorDashboard from '../components/Evaluator-Dashboard/index.vue';
-import CandidateDashboard from '../components/Candidate-Dashboard/index.vue';
-import ZoomRedirect from '../components/Auth/zoomredirect.vue';
-import ZoomDeactivate from '../components/Auth/zoomdeactivate.vue';
-import Login from '../components/Auth/Login.vue';
-import Applicant from '../components/Auth/Applicant.vue';
-import Contact from '../components/Auth/Contact.vue';
-// import Register from '../components/Auth/Register.vue';
-import Reset from '../components/Auth/Reset.vue';
-import UpdatePassword from '../components/Auth/UpdatePassword.vue';
-import Terms from '../components/Auth/tos.vue';
-import Learning from '../components/Auth/learning.vue';
-import Support from '../components/Auth/support.vue';
+
+import Vue from 'vue'
+import Router from 'vue-router'
+
+const Home = () => import(/* webpackChunkName: 'Home' */ '@/components/Home/Index')
+const Dashboard = () => import(/* webpackChunkName: 'Dashboard' */ '@/components/Dashboard')
+const CandidateDashboard = () => import(/* webpackChunkName: 'CandidateDashboard' */ '@/components/Candidate-Dashboard')
+// const EvaluatorDashboard = () => import(/* webpackChunkName: 'EvaluatorDashboard' */ '@/components/EvaluatorDashboard')
+const Login = () => import(/* webpackChunkName: 'Login' */ '@/components/Auth/Login')
+// const Register = () => import(/* webpackChunkName: 'Register' */ '@/components/Auth/Register')
+const Reset = () => import(/* webpackChunkName: 'Reset' */ '@/components/Auth/Reset')
+const UpdatePassword = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/UpdatePassword')
+const ZoomRedirect = () => import(/* webpackChunkName: 'ZoomRedirect' */ '@/components/Auth/zoomredirect')
+const ZoomDeactivate = () => import(/* webpackChunkName: 'ZoomDeactivate' */ '@/components/Auth/zoomdeactivate')
+const Applicant = () => import(/* webpackChunkName: 'Applicant' */ '@/components/Auth/Applicant')
+const Contact = () => import(/* webpackChunkName: 'Contact' */ '@/components/Auth/Contact')
+const Terms = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/tos')
+const Support = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/support')
+const Learning = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/learning')
 import store from '@/store'
 
 Vue.use(Router)
@@ -31,7 +33,7 @@ export const router = new Router({
       path: '/dashboard',
       name: 'Dashboard',
       component: Dashboard,
-      beforeEnter (to, from, next) {
+      beforeEnter(to, from, next) {
         if (!store.getters.isAuthenticated) {
           next('/login')
         } else {

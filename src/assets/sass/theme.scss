@@ -1,4 +1,3 @@
-
 // Base grayscale colors definitions
 $white: #fff !default;
 $gray-100: #f8f9fa !default;
@@ -32,17 +31,16 @@ $danger: $red !default;
 $light: $gray-100 !default;
 $dark: $gray-800 !default;
 
-
 // Bootstrap and its default variables
-@import '../../../node_modules/bootstrap/scss/bootstrap';
+@import "bootstrap/scss/bootstrap";
 // BootstrapVue and its default variables
-@import '../../../node_modules/bootstrap-vue/src/index.scss';
+@import "bootstrap-vue/src/index.scss";
 
 #showHome {
   position: fixed;
   z-index: 10000;
   top: 15px;
-  color: #FFF;
+  color: #fff;
   left: 153px;
   font-size: 23px;
 }
@@ -52,29 +50,31 @@ $dark: $gray-800 !default;
 #currentTermLabel {
   position: fixed;
   z-index: 30000;
-  color: #FFF;
+  color: #fff;
   top: 20px;
-  left: 185px
+  left: 185px;
 }
-.move { cursor: move; }
+.move {
+  cursor: move;
+}
 .rooms-container {
-    display: block;
-    height: 295px;
-    overflow-y: scroll;
+  display: block;
+  height: 295px;
+  overflow-y: scroll;
 }
 .room {
-    min-height: 35px;
-    border: 1px solid #EEE;
-    padding: 10px;
-    border-radius: 3px;
-    margin-bottom: 5px;
+  min-height: 35px;
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 3px;
+  margin-bottom: 5px;
 }
 .add-btn {
-    padding: 2px 6px;
-    font-size: 12px;
+  padding: 2px 6px;
+  font-size: 12px;
 }
 // EVAL DASHBOARD
-#faculty-dashboard{
+#faculty-dashboard {
   margin-top: 0px;
 }
 #faculty-breadcrumb {
@@ -82,7 +82,7 @@ $dark: $gray-800 !default;
   background-color: #8392a447;
   border-radius: 0px;
 }
-#faculty-breadcrumb .breadcrumb-item a { 
+#faculty-breadcrumb .breadcrumb-item a {
   color: #319c90;
   font-weight: 500;
 }
@@ -91,7 +91,7 @@ $dark: $gray-800 !default;
   font-weight: 500;
 }
 
-// SCHEDULE 
+// SCHEDULE
 .time-block {
   // cursor: pointer;
 }
@@ -101,84 +101,83 @@ $dark: $gray-800 !default;
 .break {
   background-color: #d0d0d0;
 }
-  #InterviewSchedule th {
-    font-size: 10px;
-  }
-  #InterviewSchedule td:first-child {
-    font-size: 12px;
-    font-weight: 500;
-    max-width: 200px;
-  }
-  .candidate-block-container {
-    text-align: center;
-    margin: 0 auto;
-    display: block;
-    height: 100%;
-  }
-  .candidate-block {
-    display: inline-block;
-    float: left;
-    border: 1px solid #EEE;
-    margin: 3px 7px 3px 7px;
-    height: auto;
-    width:  150px;
-  }
-  .schedule-pic {
-    display: block;
-    height: auto;
-    width:  80px;
-    height: 80px;
-  }
-  .schedule-footer {
-    width: 100%;
-    background-color: #EEE;
-    font-size: 12px;
-    text-align: center;
-    height: 30px;
-    margin-bottom: 0px;
-  }
-  // GRID STUFF
-  .time-block {
-    width:  100%;
-    height: 100%;
-    min-height: 85px;
-    padding: 10px 5px 10px 5px;
-  }
+#InterviewSchedule th {
+  font-size: 10px;
+}
+#InterviewSchedule td:first-child {
+  font-size: 12px;
+  font-weight: 500;
+  max-width: 200px;
+}
+.candidate-block-container {
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+  height: 100%;
+}
+.candidate-block {
+  display: inline-block;
+  float: left;
+  border: 1px solid #eee;
+  margin: 3px 7px 3px 7px;
+  height: auto;
+  width: 150px;
+}
+.schedule-pic {
+  display: block;
+  height: auto;
+  width: 80px;
+  height: 80px;
+}
+.schedule-footer {
+  width: 100%;
+  background-color: #eee;
+  font-size: 12px;
+  text-align: center;
+  height: 30px;
+  margin-bottom: 0px;
+}
+// GRID STUFF
+.time-block {
+  width: 100%;
+  height: 100%;
+  min-height: 85px;
+  padding: 10px 5px 10px 5px;
+}
 
-  .comment {
-    padding: 2px!important;
-    display: inline-block;
-    width: 100%;
-    margin-block-start:   0px!important;
-    margin-block-end:     0px!important;
-    margin-inline-start:  0px!important;
-    margin-inline-end:    0px!important;
-    float: left;
-    margin-bottom: 1px;
-  }
-  .schedule-pic {
-    height: 75px;
-    border-radius: 100%;
-    width: 75px;
-    margin: 0 auto;
-    display: block;
-  }
-  .application-pic {
-    height: 75px;
-    border-radius: 100%;
-    width: 75px;
-    display: inline-block;
-
+.comment {
+  padding: 2px !important;
+  display: inline-block;
+  width: 100%;
+  margin-block-start: 0px !important;
+  margin-block-end: 0px !important;
+  margin-inline-start: 0px !important;
+  margin-inline-end: 0px !important;
+  float: left;
+  margin-bottom: 1px;
+}
+.schedule-pic {
+  height: 75px;
+  border-radius: 100%;
+  width: 75px;
+  margin: 0 auto;
+  display: block;
+}
+.application-pic {
+  height: 75px;
+  border-radius: 100%;
+  width: 75px;
+  display: inline-block;
 }
 // PDF VIEWER STUFF
-  #the-canvas {
-    overflow: scroll;
-  }
+#the-canvas {
+  overflow: scroll;
+}
 .pdf-shadow {
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-  }
-  // ZOOM FRAME
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+// ZOOM FRAME
 //   #zmmtg-root {
 //     width: 0%!important;
 //     height: 0%!important;

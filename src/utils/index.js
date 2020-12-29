@@ -1,17 +1,15 @@
-// utils/index.js
 
 import Vue from 'vue'
 
 export const EventBus = new Vue()
 
-export function isValidJwt (jwt) {
+export const isValidJwt = (jwt) => {
   if (!jwt.token || jwt.token.split('.').length < 3) {
     return false
   }
-  const data = JSON.parse(atob(jwt.token.split('.')[1]))
-  // console.log(data)
+
+  // ? should check this comment code. we can check token expired. by great.dolphin.ls
+  // const data = JSON.parse(atob(jwt.token.split('.')[1]))
   // const exp = new Date(data.exp * 1000) 
-  // JS deals with dates in milliseconds since epoch
-  // const now = new Date()
   return true
 }
