@@ -23,16 +23,16 @@
         </b-col>
         <b-col md="4" class="">
           <b-card>
-            <!-- <h1 class="mb-0 p-4 tx-18 wt-400">Contact Us</h1> -->
             <h5>Contact</h5>
             <hr />
             <p>
               CandidateRank is currently in beta testing. We are ready to start
               suppporting new customers for the upcoming interview season.
               Please email us for more information at
-              <a href="mailto:info@candidate-rank.com">
-                info@candidate-rank.com</a
-              >, with a short message on how to get started.
+              <a v-bind:href="`mailto:${SUPPORT_EMAIL}`">
+                {{ SUPPORT_EMAIL }}
+              </a>
+              , with a short message on how to get started.
             </p>
             <hr />
             <!-- <b-form-group label="Name:">
@@ -77,8 +77,13 @@
 </template>
 
 <script>
+import { SUPPORT_EMAIL } from "@/utils/constants/contact";
+
 export default {
-  name: "TOS",
+  name: "ContactUs",
+  created() {
+    this.SUPPORT_EMAIL = SUPPORT_EMAIL;
+  },
   data() {
     return {
       contact: {
@@ -94,5 +99,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/sass/home.scss";
+@import "@/assets/sass/home.scss";
 </style>

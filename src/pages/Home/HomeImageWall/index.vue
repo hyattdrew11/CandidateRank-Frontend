@@ -14,14 +14,14 @@
           FELLOW INTERVIEW PROCESS
         </h3>
         <b-button
-          href="/applicant"
+          v-bind:href="LINKS.APPLICANT.HREF"
           variant="outline-secondary"
           class="mr-1 bg-green white"
         >
           Applicants
         </b-button>
         <b-button
-          href="/login"
+          v-bind:href="LINKS.LOGIN.HREF"
           variant="outline-secondary"
           class="mr-1 bg-green white"
         >
@@ -33,8 +33,13 @@
 </template>
 
 <script>
+import LINKS from "@/utils/constants/links";
+
 export default {
-  name: "HomeImageWall"
+  name: "HomeImageWall",
+  created() {
+    this.LINKS = LINKS;
+  },
 };
 </script>
 <style scoped lang="scss">
