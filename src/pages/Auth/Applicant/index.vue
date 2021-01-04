@@ -546,7 +546,4 @@ export default {
   min-height: 125vh;
   height: 100%;
 }
-#login {
-  // min-height: 125vh!important;
-}
 </style>
