@@ -10,7 +10,6 @@
 const API_URL = process.env.VUE_APP_API_URL
 import axios from 'axios'
 
-import Navigation from '../Navigation/Navigation.vue';
 export default {
   name: 'ZoomRedirect',
   data () {
@@ -23,7 +22,6 @@ export default {
     }
   },
   components: {
-  	Navigation,
     axios
   },
   mounted() {

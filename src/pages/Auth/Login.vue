@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import Navigation from '../Navigation/Navigation.vue';
 import { EventBus } from '@/utils'
 
 export default {
@@ -58,9 +57,6 @@ export default {
       password: '',
       errorMsg: null,
     }
-  },
-  components: {
-    Navigation
   },
   methods: {
     authenticate () {

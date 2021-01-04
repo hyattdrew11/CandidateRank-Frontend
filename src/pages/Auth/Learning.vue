@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import Navigation from '../Navigation/Navigation.vue';
+import Navigation from "@/components/Navigation";
 export default {
   name: 'Learning',
   data () {

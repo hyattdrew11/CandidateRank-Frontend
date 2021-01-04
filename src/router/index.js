@@ -2,21 +2,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const Home = () => import(/* webpackChunkName: 'Home' */ '@/components/Home/Index')
-const Dashboard = () => import(/* webpackChunkName: 'Dashboard' */ '@/components/Dashboard')
-const CandidateDashboard = () => import(/* webpackChunkName: 'CandidateDashboard' */ '@/components/Candidate-Dashboard')
-// const EvaluatorDashboard = () => import(/* webpackChunkName: 'EvaluatorDashboard' */ '@/components/EvaluatorDashboard')
-const Login = () => import(/* webpackChunkName: 'Login' */ '@/components/Auth/Login')
-// const Register = () => import(/* webpackChunkName: 'Register' */ '@/components/Auth/Register')
-const Reset = () => import(/* webpackChunkName: 'Reset' */ '@/components/Auth/Reset')
-const UpdatePassword = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/UpdatePassword')
-const ZoomRedirect = () => import(/* webpackChunkName: 'ZoomRedirect' */ '@/components/Auth/zoomredirect')
-const ZoomDeactivate = () => import(/* webpackChunkName: 'ZoomDeactivate' */ '@/components/Auth/zoomdeactivate')
-const Applicant = () => import(/* webpackChunkName: 'Applicant' */ '@/components/Auth/Applicant')
-const Contact = () => import(/* webpackChunkName: 'Contact' */ '@/components/Auth/Contact')
-const Terms = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/tos')
-const Support = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/support')
-const Learning = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/learning')
+const Home = () => import(/* webpackChunkName: 'Home' */ '@/pages/Home')
+const Dashboard = () => import(/* webpackChunkName: 'Dashboard' */ '@/pages/Dashboard')
+const CandidateDashboard = () => import(/* webpackChunkName: 'CandidateDashboard' */ '@/pages/CandidateDashboard')
+const Login = () => import(/* webpackChunkName: 'Login' */ '@/pages/Auth/Login')
+// const Register = () => import(/* webpackChunkName: 'Register' */ '@/pages/Auth/Register')
+const Reset = () => import(/* webpackChunkName: 'Reset' */ '@/pages/Auth/Reset')
+const UpdatePassword = () => import(/* webpackChunkName: 'home' */ '@/pages/Auth/UpdatePassword')
+const ZoomRedirect = () => import(/* webpackChunkName: 'ZoomRedirect' */ '@/pages/Auth/ZoomRedirect')
+const ZoomDeactivate = () => import(/* webpackChunkName: 'ZoomDeactivate' */ '@/pages/Auth/ZoomDeactivate')
+const Applicant = () => import(/* webpackChunkName: 'Applicant' */ '@/pages/Auth/Applicant')
+const Contact = () => import(/* webpackChunkName: 'Contact' */ '@/pages/Auth/Contact')
+const TermsOfService = () => import(/* webpackChunkName: 'TermsOfService' */ '@/pages/Auth/TermsOfService')
+const Support = () => import(/* webpackChunkName: 'Support' */ '@/pages/Auth/Support')
+const Learning = () => import(/* webpackChunkName: 'Learning' */ '@/pages/Auth/Learning')
 import store from '@/store'
 
 Vue.use(Router)
@@ -44,7 +43,7 @@ export const router = new Router({
     {
       path: '/terms',
       name: 'Terms',
-      component: Terms,
+      component: TermsOfService,
     },
     {
       path: '/learning',

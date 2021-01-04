@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import Navigation from '../Navigation/Navigation.vue';
 const API_URL = process.env.VUE_APP_API_URL
 import axios from 'axios'
 
@@ -51,7 +50,6 @@ export default {
     }
   },
   components: {
-    Navigation,
     axios
   },
   methods: {

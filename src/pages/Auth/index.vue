@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import Navigation from '../Navigation/Navigation.vue';
+import Navigation from "@/components/Navigation";
 import { EventBus } from '@/utils'
 
 export default {

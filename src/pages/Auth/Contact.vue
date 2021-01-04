@@ -1,22 +1,39 @@
 <template>
-	<div>
-    <b-navbar id="main-nav" toggleable="lg" type="dark" variant="none" fixed="top">
-        <b-navbar-brand>
-          <img height="35" class="" src="img/logo/cr-logo-white.png" />
-        </b-navbar-brand>
-      </b-navbar>
+  <div>
+    <b-navbar
+      id="main-nav"
+      toggleable="lg"
+      type="dark"
+      variant="none"
+      fixed="top"
+    >
+      <b-navbar-brand>
+        <img height="35" class="" src="img/logo/cr-logo-white.png" />
+      </b-navbar-brand>
+    </b-navbar>
     <b-container fluid>
-        <b-row align-v="center"   class="pt-4 mt-4 no-gutters">
-          <b-col md="2" class=""></b-col>
-          <b-col md="4" class="">
-           <img src="img/background/contact-us.png" class="mt-3 p-4" height="620" />
-         </b-col>
+      <b-row align-v="center" class="pt-4 mt-4 no-gutters">
+        <b-col md="2" class=""></b-col>
+        <b-col md="4" class="">
+          <img
+            src="img/background/contact-us.png"
+            class="mt-3 p-4"
+            height="620"
+          />
+        </b-col>
         <b-col md="4" class="">
           <b-card>
-		      <!-- <h1 class="mb-0 p-4 tx-18 wt-400">Contact Us</h1> -->
+            <!-- <h1 class="mb-0 p-4 tx-18 wt-400">Contact Us</h1> -->
             <h5>Contact</h5>
             <hr />
-            <p>CandidateRank is currently in beta testing. We are ready to start suppporting new customers for the upcoming interview season. Please email us for more information at <a href="mailto:info@candidate-rank.com"> info@candidate-rank.com</a>, with a short message on how to get started.</p>
+            <p>
+              CandidateRank is currently in beta testing. We are ready to start
+              suppporting new customers for the upcoming interview season.
+              Please email us for more information at
+              <a href="mailto:info@candidate-rank.com">
+                info@candidate-rank.com</a
+              >, with a short message on how to get started.
+            </p>
             <hr />
             <!-- <b-form-group label="Name:">
               <b-form-input 
@@ -56,29 +73,26 @@
         </b-col>
       </b-row>
     </b-container>
-	</div>
+  </div>
 </template>
 
 <script>
-import Navigation from '../Navigation/Navigation.vue';
 export default {
-  name: 'TOS',
-  data () {
+  name: "TOS",
+  data() {
     return {
       contact: {
-        name: '',
-        email: '',
-        message: '',
+        name: "",
+        email: "",
+        message: "",
       },
-      isSending: false
-    }
+      isSending: false,
+    };
   },
-  components: {
-  	Navigation
-  }
-}
+  components: {},
+};
 </script>
 
 <style lang="scss" scoped>
-  @import '../../assets/sass/home.scss';
+@import "../../assets/sass/home.scss";
 </style>
