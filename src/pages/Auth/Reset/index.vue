@@ -6,7 +6,7 @@
       v-if="loading"
       class="fa fa-spinner fa-pulse fa-3x fa-fw text-info"
       aria-hidden="true"
-    ></i>
+    />
     <div :class="{ fade: loading }">
       <Logo :height="135" :isLogin="true" />
       <div class="container-fluid">
@@ -17,10 +17,10 @@
               <hr />
               <b-form-group label="Email address:">
                 <b-form-input
-                  v-model="email"
-                  placeholder="Enter your email"
                   trim
                   type="email"
+                  placeholder="Enter your email"
+                  v-model="email"
                 />
               </b-form-group>
               <hr />
@@ -92,15 +92,6 @@ export default {
       let vm = this;
       this.loading = true;
       this.$refs.recaptcha.execute();
-      // axios.post( API_URL+'/auth/password_reset/', input)
-      // .then(({data}) => {
-      //   // console.log(data)
-      //   alert("Please check your email address for a password reset link.")
-      // })
-      // .catch(function (e) {
-      //   vm.attempts++
-      //   vm.errorMsg = "We do not recognize that email address please try again."
-      // })
     },
     onCaptchaVerified: function (recaptchaToken) {
       this.loading = true;
