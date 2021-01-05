@@ -7,7 +7,7 @@
         class="text-center pt-4"
         style="background-image: url('img/background/header.jpg')"
       >
-        <img height="175" class="" src="img/logo/cr-logo-white.png" />
+        <Logo :height="175" />
         <h1 id="tagline" class="white">CandidateRank</h1>
         <h3 class="white">
           FULLY AUTOMATED & INTEGRATED RESIDENT <br />
@@ -33,12 +33,16 @@
 </template>
 
 <script>
+import Logo from "@/components/Logo";
 import LINKS from "@/utils/constants/links";
 
 export default {
   name: "HomeImageWall",
   created() {
     this.LINKS = LINKS;
+  },
+  components: {
+    Logo,
   },
 };
 </script>

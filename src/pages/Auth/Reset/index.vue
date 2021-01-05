@@ -8,7 +8,7 @@
       aria-hidden="true"
     ></i>
     <div :class="{ fade: loading }">
-      <img height="135" class="login-logo" src="img/logo/cr-logo-white.png" />
+      <Logo :height="135" :isLogin="true" />
       <div class="container-fluid">
         <b-row id="login" align-v="center" align-h="center" no-gutters>
           <b-col sm="12" md="4" lg="4">
@@ -63,6 +63,7 @@
 const API_URL = process.env.VUE_APP_API_URL;
 import axios from "axios";
 import VueRecaptcha from "vue-recaptcha";
+import Logo from "@/components/Logo";
 import LINKS from "@/utils/constants/links";
 
 export default {
@@ -81,6 +82,7 @@ export default {
   components: {
     axios,
     VueRecaptcha,
+    Logo,
   },
   methods: {
     reset() {
@@ -132,9 +134,4 @@ export default {
 
 <style scoped lang="scss">
 @import "@/assets/sass/home.scss";
-.login-logo {
-  position: fixed;
-  top: 25px;
-  left: 30px;
-}
 </style>

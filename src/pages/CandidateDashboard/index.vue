@@ -8,7 +8,7 @@
       fixed="top"
     >
       <b-navbar-brand>
-        <img height="35" class="" src="img/logo/cr-logo-white.png" />
+        <Logo />
       </b-navbar-brand>
     </b-navbar>
     <i
@@ -86,11 +86,13 @@
 import moment from "moment";
 const API_URL = process.env.VUE_APP_API_URL;
 import axios from "axios";
+import Logo from "@/components/Logo";
 
 export default {
   name: "CandidateDashboard",
   components: {
     axios,
+    Logo,
   },
   data() {
     return {

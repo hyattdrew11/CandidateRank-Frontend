@@ -1,7 +1,7 @@
 <!-- components/Login.vue -->
 <template>
   <div>
-    <img height="135" class="login-logo" src="img/logo/cr-logo-white.png" />
+    <Logo :height="135" :isLogin="true" />
     <div class="container-fluid">
       <b-row id="login" align-v="center" align-h="center" no-gutters>
         <b-col sm="12" md="4" lg="4">
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import Logo from "@/components/Logo";
 import { EventBus } from "@/utils";
 import LINKS from "@/utils/constants/links";
 
@@ -76,6 +77,9 @@ export default {
       password: "",
       errorMsg: null,
     };
+  },
+  components: {
+    Logo,
   },
   methods: {
     authenticate() {
@@ -92,11 +96,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-.login-logo {
-  position: fixed;
-  top: 25px;
-  left: 30px;
-}
-</style>

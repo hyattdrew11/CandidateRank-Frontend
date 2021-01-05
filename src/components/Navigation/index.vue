@@ -12,12 +12,7 @@
           v-if="!user"
           :to="{ name: user ? LINKS.DASHBOARD.TITLE : LINKS.HOME.TITLE }"
         >
-          <img
-            alt="white-logo"
-            height="35"
-            class=""
-            src="img/logo/cr-logo-white.png"
-          />
+          <Logo />
         </router-link>
       </b-navbar-brand>
 
@@ -48,6 +43,7 @@
 </template>
 
 <script>
+import Logo from "@/components/Logo";
 import LINKS from "@/utils/constants/links";
 
 export default {
@@ -59,6 +55,9 @@ export default {
     return {
       user: this.$store.state.user,
     };
+  },
+  components: {
+    Logo,
   },
   methods: {
     logout() {
