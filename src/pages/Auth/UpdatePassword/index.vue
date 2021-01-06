@@ -46,9 +46,10 @@
 </template>
 
 <script>
-const API_URL = process.env.VUE_APP_API_URL;
-import axios from "axios";
+import * as serviceAPI from "@/api";
 import LINKS from "@/utils/constants/links";
+import MESSAGES from "@/utils/constants/messages";
+import { checkValidPassword } from "@/utils/helpers/validation";
 
 export default {
   name: "UpdatePassword",
@@ -64,42 +65,36 @@ export default {
       errorMsg: null,
     };
   },
-  components: {
-    axios,
-  },
+  components: {},
   methods: {
     validateForm() {
-      // CHECK ALL PASSWORDS MATCH
-      let validated = false;
-      function isValid(str) {
-        return !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(str);
-      }
       if (this.password.length < 8) {
-        this.errorMsg =
-          "Password must be longer than 7 letters and include a special character.";
-        return;
-      } else if (isValid(this.password)) {
-        this.errorMsg = "Password is must contain a special character.";
+        this.errorMsg = MESSAGES.PASSWORD_LENGTH_VALIDATION_ERROR;
         return;
       }
+
+      if (!checkValidPassword(this.password)) {
+        this.errorMsg = MESSAGES.PASSWORD_SPECIAL_CHARACTER_VALIDATION_ERROR;
+        return;
+      }
+
       this.reset();
     },
     reset() {
-      let input = {
+      const params = {
         password: this.password,
         email: this.email,
         reset_link: this.reset_link,
       };
-      // console.log(input)
-      let vm = this;
-      axios
-        .post(API_URL + "/auth/password_update/", input)
+
+      serviceAPI
+        .updatePassword(params)
         .then(({ data }) => {
-          alert("Password updated, please login.");
-          window.location.href = "/login";
+          alert(MESSAGES.UPDATE_PASSWORD_SUCCESS);
+          window.location.href = LINKS.LOGIN.HREF;
         })
         .catch(function (e) {
-          alert("Error resetting password. Please contact your administrator.");
+          alert(MESSAGES.UPDATE_PASSWORD_ERROR);
         });
     },
   },
@@ -107,9 +102,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.login-logo {
-  position: fixed;
-  top: 25px;
-  left: 30px;
-}
 </style>
