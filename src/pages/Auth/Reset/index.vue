@@ -1,4 +1,4 @@
-<!-- components/Login.vue -->
+
 <template>
   <div>
     <i
@@ -60,11 +60,11 @@
 </template>
 
 <script>
-const API_URL = process.env.VUE_APP_API_URL;
-import axios from "axios";
 import VueRecaptcha from "vue-recaptcha";
+import * as serviceAPI from "@/api";
 import Logo from "@/components/Logo";
 import LINKS from "@/utils/constants/links";
+import MESSAGES from "@/utils/constants/messages";
 
 export default {
   name: "Reset",
@@ -80,7 +80,6 @@ export default {
     };
   },
   components: {
-    axios,
     VueRecaptcha,
     Logo,
   },
@@ -98,20 +97,22 @@ export default {
       const self = this;
       self.status = "submitting";
       self.$refs.recaptcha.reset();
-      let input = {
+
+      const params = {
         email: this.email,
-        recaptchaToken: recaptchaToken,
+        recaptchaToken,
       };
-      axios
-        .post(API_URL + "/auth/password_reset/", input)
+
+      serviceAPI
+        .resetPassword(params)
         .then(({ data }) => {
           this.loading = false;
-          alert("Please check your email address for a password reset link.");
+          alert(MESSAGES.RESEND_VERIFY_EMAIL);
           window.location.reload();
         })
         .catch(function (e) {
           self.attempts++;
-          self.errorMsg = "There was an error, please try again.";
+          self.errorMsg = MESSAGES.RESET_PASSWORD_ERROR;
           self.loading = false;
         });
     },
