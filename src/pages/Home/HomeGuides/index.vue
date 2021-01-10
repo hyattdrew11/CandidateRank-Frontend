@@ -1,7 +1,12 @@
 <template>
-  <b-container id="testimonials" fluid class="mt-4">
+  <b-container id="testimonials" fluid class="mt-4 mb-4">
     <b-row no-gutters class="p-3">
-      <b-col class="p-3" v-for="(guide, index) in guides" v-bind:key="index">
+      <b-col
+        sm="4"
+        class="p-3"
+        v-for="(guide, index) in guides"
+        v-bind:key="index"
+      >
         <h5 class="tx-16">
           {{ guide.title }}
         </h5>
