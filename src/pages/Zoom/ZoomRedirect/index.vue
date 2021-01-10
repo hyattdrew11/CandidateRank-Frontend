@@ -12,8 +12,8 @@
 </template>
 
 <script>
-const API_URL = process.env.VUE_APP_API_URL;
-import axios from "axios";
+import * as zoomAPI from "@/api/zoom-api";
+import LINKS from "@/utils/constants/links";
 
 export default {
   name: "ZoomRedirect",
@@ -25,49 +25,41 @@ export default {
       message: "",
     };
   },
-  components: {
-    axios,
-  },
+  components: {},
   mounted() {
-    // console.log(localStorage.user)
-    // let user = JSON.parse(localStorage.user)
-    // this.email = user.email
     this.checkZoomCode(this.zoom_code);
   },
   methods: {
     checkZoomCode(code) {
-      if (code == undefined) {
-        // REDIRECT TO HOME
+      if (code === undefined) {
         alert(
           "There seems to be a problem with Zoom. Please go back to Candidate Rank and try again."
         );
-        this.$router.push("/dashboard");
+        this.$router.push(LINKS.DASHBOARD.HREF);
       } else {
         this.authenticateZoom();
       }
     },
-    authenticateZoom() {
-      let input = {
-        code: this.zoom_code,
-        email: this.email,
-      };
-      axios
-        .post(API_URL + "/auth/zoom_authentication/", input)
-        .then(({ data }) => {
-          this.loading = false;
-          this.$router.push("/login");
-        })
-        .catch(function (e) {
-          console.log(e);
-          this.loading = true;
-          this.message = e;
-          alert(
-            "There seems to be a problem with Zoom. Please go back to Candidate Rank and try again."
-          );
-          this.$router.push("/dashboard");
-        });
+    async authenticateZoom() {
+      const self = this;
+      try {
+        const params = {
+          code: this.zoom_code,
+          email: this.email,
+        };
+
+        await zoomAPI.zoomAuth(params);
+        self.loading = false;
+        self.$router.push(LINKS.LOGIN.HREF);
+      } catch (error) {
+        self.loading = true;
+        self.message = error;
+        alert(
+          "There seems to be a problem with Zoom. Please go back to Candidate Rank and try again."
+        );
+        self.$router.push(LINKS.DASHBOARD.HREF);
+      }
     },
-    login() {},
   },
 };
 </script>
