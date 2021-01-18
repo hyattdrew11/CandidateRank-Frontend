@@ -8,12 +8,7 @@
       fixed="top"
     >
       <b-navbar-brand>
-        <router-link
-          v-if="!user"
-          :to="{ name: user ? LINKS.DASHBOARD.TITLE : LINKS.HOME.TITLE }"
-        >
-          <Logo />
-        </router-link>
+        <Logo />
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse" />
@@ -65,7 +60,7 @@ export default {
       window.location.replace("/");
     },
     goLogin() {
-      this.$router.push("login");
+      this.$router.push(LINKS.LOGIN.HREF);
     },
   },
 };
