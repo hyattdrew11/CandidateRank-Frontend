@@ -8,7 +8,7 @@
       aria-hidden="true"
     />
     <div :class="{ fade: loading }">
-      <Logo :height="135" :isLogin="true" />
+      <Logo :height="115" :isLogin="true" />
       <div class="container-fluid">
         <b-row
           v-if="!showDashboard"
@@ -17,7 +17,7 @@
           align-h="center"
           no-gutters
         >
-          <b-col sm="12" md="4" lg="4" v-if="!authenticated">
+          <b-col sm="12" md="4" lg="4" class="p-3 p-md-0" v-if="!authenticated">
             <b-card>
               <h5>Candidate Rank Applicants</h5>
               <span class="tx-12 wt-500">
@@ -50,7 +50,13 @@
               Terms of service
             </router-link>
           </b-col>
-          <b-col sm="12" md="4" lg="4" v-if="authenticated && !showDashboard">
+          <b-col
+            sm="12"
+            md="4"
+            lg="4"
+            class="p-3 p-md-0"
+            v-if="authenticated && !showDashboard"
+          >
             <b-card>
               <label class="tx-12 wt-600 dark-gray">Choose Organization:</label>
               <b-form-select

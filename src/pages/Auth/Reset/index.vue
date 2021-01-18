@@ -8,10 +8,10 @@
       aria-hidden="true"
     />
     <div :class="{ fade: loading }">
-      <Logo :height="135" :isLogin="true" />
+      <Logo :height="115" :isLogin="true" />
       <div class="container-fluid">
         <b-row id="login" align-v="center" align-h="center" no-gutters>
-          <b-col sm="12" md="4" lg="4">
+          <b-col sm="12" md="4" lg="4" class="p-3 p-md-0">
             <b-card v-if="attempts < 3">
               <h5>Candidate Rank Password Reset</h5>
               <hr />

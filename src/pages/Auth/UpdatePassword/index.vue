@@ -3,7 +3,7 @@
   <div>
     <div class="container-fluid">
       <b-row id="login" align-v="center" align-h="center" no-gutters>
-        <b-col sm="12" md="4" lg="4">
+        <b-col sm="12" md="6" lg="4" class="p-3 p-md-0">
           <b-card>
             <h5>Candidate Rank Update Password</h5>
             <hr />
