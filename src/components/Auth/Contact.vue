@@ -2,14 +2,14 @@
 	<div>
     <b-navbar id="main-nav" toggleable="lg" type="dark" variant="none" fixed="top">
         <b-navbar-brand>
-          <img height="35" class="" src="cr-logo-white.png" />
+          <img height="35" class="" src="img/logo/cr-logo-white.png" />
         </b-navbar-brand>
       </b-navbar>
     <b-container fluid>
         <b-row align-v="center"   class="pt-4 mt-4 no-gutters">
           <b-col md="2" class=""></b-col>
           <b-col md="4" class="">
-           <img src="contact-us.png" class="mt-3 p-4" height="620" />
+           <img src="img/background/contact-us.png" class="mt-3 p-4" height="620" />
          </b-col>
         <b-col md="4" class="">
           <b-card>

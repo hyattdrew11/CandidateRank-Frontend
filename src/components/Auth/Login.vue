@@ -1,7 +1,7 @@
 <!-- components/Login.vue -->
 <template>
   <div>
-    <img height="135" class="login-logo" src="cr-logo-white.png" />
+    <img height="135" class="login-logo" src="img/logo/cr-logo-white.png" />
     <div class="container-fluid">
       <b-row id="login" align-v="center" align-h="center"  no-gutters>
         <b-col sm="12" md="4" lg="4">

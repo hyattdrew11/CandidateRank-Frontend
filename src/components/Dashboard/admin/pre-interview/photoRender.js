@@ -21,7 +21,7 @@ export default Vue.extend({
                 this.imagePath = path 
             }
             else {
-                this.imagePath = "placeholder.png"
+                this.imagePath = "img/icon/placeholder.png"
             }
         }
     }

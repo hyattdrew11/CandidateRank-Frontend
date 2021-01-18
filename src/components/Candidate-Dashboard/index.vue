@@ -2,7 +2,7 @@
 	<div>
 		<b-navbar id="main-nav" toggleable="lg" type="dark" variant="none" fixed="top">
         <b-navbar-brand>
-        	<img height="35" class="" src="/cr-logo-white.png" />
+        	<img height="35" class="" src="img/logo/cr-logo-white.png" />
         </b-navbar-brand>
       </b-navbar>
       <i id="loader" v-if="loading" class="fa fa-spinner fa-pulse fa-3x fa-fw text-info" aria-hidden="true"></i>

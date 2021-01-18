@@ -3,7 +3,7 @@ import Vue from "vue";
 export default Vue.extend({
     template: `
     <div class="candidate-img">
-        <img v-if="imagePath == 'placeholder.png'" @click="uploadPhoto()" height="75" width="75" :src="imagePath" />
+        <img v-if="imagePath == 'img/icon/placeholder.png'" @click="uploadPhoto()" height="75" width="75" :src="imagePath" />
         <img v-else height="75" width="75" :src="imagePath" />
     </div>
     `,
@@ -25,7 +25,7 @@ export default Vue.extend({
                 this.imagePath = path 
             }
             else {
-                this.imagePath = "placeholder.png"
+                this.imagePath = "img/icon/placeholder.png"
             }
         }
     }

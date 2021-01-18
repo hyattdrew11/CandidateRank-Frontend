@@ -9,11 +9,11 @@
     >
       <b-navbar-brand>
         <router-link v-if="!user" :to="{ name: 'Home' }">
-          <img height="35" class="" src="cr-logo-white.png" />
+          <img height="35" class="" src="img/logo/cr-logo-white.png" />
           <!-- <span class="brand-text">andidate Rank</span> -->
         </router-link>
         <router-link v-if="user" :to="{ name: 'Dashboard' }">
-          <img height="35" class="" src="cr-logo-white.png" />
+          <img height="35" class="" src="img/logo/cr-logo-white.png" />
           <!-- <span class="brand-text">andidate Rank</span> -->
         </router-link>
         <!--    <img 
