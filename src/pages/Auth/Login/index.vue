@@ -1,27 +1,27 @@
-<!-- components/Login.vue -->
+
 <template>
   <div>
-    <img height="135" class="login-logo" src="img/logo/cr-logo-white.png" />
+    <Logo :height="135" :isLogin="true" />
     <div class="container-fluid">
       <b-row id="login" align-v="center" align-h="center" no-gutters>
-        <b-col sm="12" md="4" lg="4">
+        <b-col sm="12" md="4" lg="4" class="p-3 p-md-0">
           <b-card>
             <h5>Candidate Rank Login</h5>
             <hr />
             <b-form-group label="Email address:">
               <b-form-input
-                v-model="email"
-                placeholder="Enter your email"
                 trim
                 type="email"
+                placeholder="Enter your email"
+                v-model="email"
               />
             </b-form-group>
             <b-form-group label="Password:">
               <b-form-input
-                v-model="password"
-                placeholder="Enter your password"
                 trim
                 type="password"
+                placeholder="Enter your password"
+                v-model="password"
                 @keyup.enter="authenticate()"
               />
             </b-form-group>
@@ -63,10 +63,12 @@
 </template>
 
 <script>
+import Logo from "@/components/Logo";
 import { EventBus } from "@/utils";
 import LINKS from "@/utils/constants/links";
 
 export default {
+  name: "Login",
   created() {
     this.LINKS = LINKS;
   },
@@ -76,6 +78,9 @@ export default {
       password: "",
       errorMsg: null,
     };
+  },
+  components: {
+    Logo,
   },
   methods: {
     authenticate() {
@@ -92,11 +97,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-.login-logo {
-  position: fixed;
-  top: 25px;
-  left: 30px;
-}
-</style>

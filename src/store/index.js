@@ -3,14 +3,15 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
-// imports of AJAX functions will go here
-import { authenticate, authenticateAS, register, getCandidates } from '@/api'
+import {
+  authenticate,
+  authenticateAS,
+  register,
+  getCandidates
+} from '@/api'
 import { isValidJwt, EventBus } from '@/utils'
 
 Vue.use(Vuex)
-
-const redirUrl = 'https://candidaterank.io/zoomredirect'
-// const redirUrl = 'http://localhost:8080/zoomredirect'
 
 const state = {
   user: null,
@@ -52,7 +53,7 @@ const actions = {
       .then((response) => {
         console.log(response)
         context.commit('setJwtToken', { jwt: response.data })
-        EventBus.$emit('authenticated', 'Sucessful login')
+        EventBus.$emit('authenticated', 'Successful login')
         window.location.href = '/dashboard'
         // if(response.data.error == 'auth-zoom') {
         //   context.commit('setJwtToken', { jwt: response.data.token })

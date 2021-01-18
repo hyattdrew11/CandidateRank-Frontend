@@ -6,9 +6,9 @@
       v-if="loading"
       class="fa fa-spinner fa-pulse fa-3x fa-fw text-info"
       aria-hidden="true"
-    ></i>
+    />
     <div :class="{ fade: loading }">
-      <img height="135" class="login-logo" src="img/logo/cr-logo-white.png" />
+      <Logo :height="135" :isLogin="true" />
       <div class="container-fluid">
         <b-row id="login" align-v="center" align-h="center" no-gutters>
           <b-col sm="12" md="4" lg="4">
@@ -17,10 +17,10 @@
               <hr />
               <b-form-group label="Email address:">
                 <b-form-input
-                  v-model="email"
-                  placeholder="Enter your email"
                   trim
                   type="email"
+                  placeholder="Enter your email"
+                  v-model="email"
                 />
               </b-form-group>
               <hr />
@@ -63,6 +63,7 @@
 const API_URL = process.env.VUE_APP_API_URL;
 import axios from "axios";
 import VueRecaptcha from "vue-recaptcha";
+import Logo from "@/components/Logo";
 import LINKS from "@/utils/constants/links";
 
 export default {
@@ -81,6 +82,7 @@ export default {
   components: {
     axios,
     VueRecaptcha,
+    Logo,
   },
   methods: {
     reset() {
@@ -90,15 +92,6 @@ export default {
       let vm = this;
       this.loading = true;
       this.$refs.recaptcha.execute();
-      // axios.post( API_URL+'/auth/password_reset/', input)
-      // .then(({data}) => {
-      //   // console.log(data)
-      //   alert("Please check your email address for a password reset link.")
-      // })
-      // .catch(function (e) {
-      //   vm.attempts++
-      //   vm.errorMsg = "We do not recognize that email address please try again."
-      // })
     },
     onCaptchaVerified: function (recaptchaToken) {
       this.loading = true;
@@ -132,9 +125,4 @@ export default {
 
 <style scoped lang="scss">
 @import "@/assets/sass/home.scss";
-.login-logo {
-  position: fixed;
-  top: 25px;
-  left: 30px;
-}
 </style>

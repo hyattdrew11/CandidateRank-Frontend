@@ -8,7 +8,7 @@
       fixed="top"
     >
       <b-navbar-brand>
-        <img height="35" class="" src="img/logo/cr-logo-white.png" />
+        <Logo />
       </b-navbar-brand>
     </b-navbar>
     <b-container fluid>
@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import Logo from "@/components/Logo";
 import { SUPPORT_EMAIL } from "@/utils/constants/contact";
 
 export default {
@@ -94,7 +95,9 @@ export default {
       isSending: false,
     };
   },
-  components: {},
+  components: {
+    Logo,
+  },
 };
 </script>
 

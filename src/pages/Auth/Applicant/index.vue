@@ -8,7 +8,7 @@
       aria-hidden="true"
     ></i>
     <div :class="{ fade: loading }">
-      <img height="135" class="login-logo" src="img/logo/cr-logo-white.png" />
+      <Logo :height="135" :isLogin="true" />
       <div class="container-fluid">
         <b-row
           v-if="!showDashboard"
@@ -248,6 +248,7 @@ import { EventBus } from "@/utils";
 const API_URL = process.env.VUE_APP_API_URL;
 import axios from "axios";
 import moment from "moment";
+import Logo from "@/components/Logo";
 import LINKS from "@/utils/constants/links";
 
 export default {
@@ -273,6 +274,7 @@ export default {
     };
   },
   components: {
+    Logo,
     axios,
   },
   computed: {
@@ -534,11 +536,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.login-logo {
-  position: fixed;
-  top: 25px;
-  left: 30px;
-}
 #applicant-dashboard {
   width: 100%;
   height: 100%;
