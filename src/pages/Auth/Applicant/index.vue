@@ -6,7 +6,7 @@
       v-if="loading"
       class="fa fa-spinner fa-pulse fa-3x fa-fw text-info"
       aria-hidden="true"
-    ></i>
+    />
     <div :class="{ fade: loading }">
       <Logo :height="135" :isLogin="true" />
       <div class="container-fluid">
@@ -26,10 +26,10 @@
               <hr />
               <b-form-group label="Email address:">
                 <b-form-input
-                  v-model="email"
-                  placeholder="Enter your email"
                   trim
                   type="email"
+                  placeholder="Enter your email"
+                  v-model="email"
                 ></b-form-input>
               </b-form-group>
               <hr />
@@ -39,8 +39,9 @@
                 class="mr-1 float-right bg-green white"
                 variant="outline-secondary"
                 @click="authenticate"
-                >Login</b-button
               >
+                Login
+              </b-button>
             </b-card>
             <router-link
               class="tx-12 white float-left mt-2 ml-1"
@@ -105,12 +106,12 @@
               >
                 <h5>My Schedule</h5>
                 <h6>
-                  <strong
-                    >My Interview Day:
+                  <strong>
+                    My Interview Day:
                     <span>{{ me["interview-date"] }}</span>
-                    <span v-if="!('interview-date' in me)">{{
-                      candidateSlots[0].startDate
-                    }}</span>
+                    <span v-if="!('interview-date' in me)">
+                      {{ candidateSlots[0].startDate }}
+                    </span>
                   </strong>
                 </h6>
                 <h4>
@@ -126,8 +127,9 @@
                   :href="waitingRoom"
                   target="_blank"
                   class="btn btn-sm btn-success mb-2"
-                  >Waiting Room</a
                 >
+                  Waiting Room
+                </a>
                 <hr />
               </div>
 
@@ -138,8 +140,8 @@
                     v-bind:key="index"
                   >
                     <p class="wt-500 mb-2 tx-18">
-                      <i class="fa fa-clock"></i>
-                      {{ x.startDate }} {{ convertMilitary(x.time) }} CST
+                      <i class="fa fa-clock" /> {{ x.startDate }}
+                      {{ convertMilitary(x.time) }} CST
                     </p>
                     <span class="wt-500">Evaluator(s):</span>
                     <span
@@ -202,8 +204,9 @@
                         size="sm"
                         variant="success"
                         class="float-right mr-2"
-                        >Choose Date</b-button
                       >
+                        Choose Date
+                      </b-button>
                       <p v-if="'finalized' in x" class="tx-10 wt-500 red upper">
                         Schedule finalized
                       </p>

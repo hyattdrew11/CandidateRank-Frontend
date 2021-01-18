@@ -18,3 +18,11 @@ export function register(userData) {
 export function getCandidates(organization) {
   return axios.get(`${API_URL}/candidates/all/${organization}`)
 }
+
+export function resetPassword(params) {
+  return axios.post(`${API_URL}/auth/password_reset/`, params)
+}
+
+export function updatePassword(params) {
+  return axios.post(`${API_URL}/auth/password_update/`, params)
+}
