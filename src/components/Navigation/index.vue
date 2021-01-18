@@ -10,17 +10,10 @@
       <b-navbar-brand>
         <router-link v-if="!user" :to="{ name: 'Home' }">
           <img height="35" class="" src="img/logo/cr-logo-white.png" />
-          <!-- <span class="brand-text">andidate Rank</span> -->
         </router-link>
         <router-link v-if="user" :to="{ name: 'Dashboard' }">
           <img height="35" class="" src="img/logo/cr-logo-white.png" />
-          <!-- <span class="brand-text">andidate Rank</span> -->
         </router-link>
-        <!--    <img 
-          height="30" 
-          src="https://communications.tulane.edu/sites/g/files/rdw811/f/pictures/%C6%92%C6%92TUshield_1c_BLK.png" /> -->
-        <!-- Candidate Rank  -->
-        <!-- <span v-if="user">• {{ user.role }}</span> -->
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -33,22 +26,17 @@
             v-if="!user"
             size="sm"
             variant="outline-light"
-            >login</b-button
           >
+            login
+          </b-button>
           <b-nav-item-dropdown v-if="user" right>
-            <!-- Using 'button-content' slot -->
-
             <template v-slot:button-content>
               <em>{{ user.email }}</em>
             </template>
-            <!--   <b-dropdown-item @click="zoomAuth()">
-                <span class="black">Sync Zoom</span>
-               </b-dropdown-item> -->
             <b-dropdown-item @click="logout">
               <span id="logout">Sign Out</span>
             </b-dropdown-item>
           </b-nav-item-dropdown>
-          <!-- <i v-if="user"  v-b-tooltip.hover title="Open User Guide" id="open-guide" v-b-toggle.sidebar class="fa fa-question-circle"></i> -->
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

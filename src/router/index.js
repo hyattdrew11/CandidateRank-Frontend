@@ -2,21 +2,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const Home = () => import(/* webpackChunkName: 'Home' */ '@/components/Home/Index')
-const Dashboard = () => import(/* webpackChunkName: 'Dashboard' */ '@/components/Dashboard')
-const CandidateDashboard = () => import(/* webpackChunkName: 'CandidateDashboard' */ '@/components/Candidate-Dashboard')
-// const EvaluatorDashboard = () => import(/* webpackChunkName: 'EvaluatorDashboard' */ '@/components/EvaluatorDashboard')
-const Login = () => import(/* webpackChunkName: 'Login' */ '@/components/Auth/Login')
-// const Register = () => import(/* webpackChunkName: 'Register' */ '@/components/Auth/Register')
-const Reset = () => import(/* webpackChunkName: 'Reset' */ '@/components/Auth/Reset')
-const UpdatePassword = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/UpdatePassword')
-const ZoomRedirect = () => import(/* webpackChunkName: 'ZoomRedirect' */ '@/components/Auth/zoomredirect')
-const ZoomDeactivate = () => import(/* webpackChunkName: 'ZoomDeactivate' */ '@/components/Auth/zoomdeactivate')
-const Applicant = () => import(/* webpackChunkName: 'Applicant' */ '@/components/Auth/Applicant')
-const Contact = () => import(/* webpackChunkName: 'Contact' */ '@/components/Auth/Contact')
-const Terms = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/tos')
-const Support = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/support')
-const Learning = () => import(/* webpackChunkName: 'home' */ '@/components/Auth/learning')
+const Home = () => import(/* webpackChunkName: 'Home' */ '@/pages/Home')
+const TermsOfService = () => import(/* webpackChunkName: 'TermsOfService' */ '@/pages/TermsOfService')
+const Learning = () => import(/* webpackChunkName: 'Learning' */ '@/pages/Learning')
+const Support = () => import(/* webpackChunkName: 'Support' */ '@/pages/Support')
+const ContactUs = () => import(/* webpackChunkName: 'Contact' */ '@/pages/ContactUs')
+const Login = () => import(/* webpackChunkName: 'Login' */ '@/pages/Auth/Login')
+const Reset = () => import(/* webpackChunkName: 'Reset' */ '@/pages/Auth/Reset')
+const Applicant = () => import(/* webpackChunkName: 'Applicant' */ '@/pages/Auth/Applicant')
+const UpdatePassword = () => import(/* webpackChunkName: 'home' */ '@/pages/Auth/UpdatePassword')
+const ZoomRedirect = () => import(/* webpackChunkName: 'ZoomRedirect' */ '@/pages/Zoom/ZoomRedirect')
+const ZoomDeactivate = () => import(/* webpackChunkName: 'ZoomDeactivate' */ '@/pages/Zoom/ZoomDeactivate')
+const Dashboard = () => import(/* webpackChunkName: 'Dashboard' */ '@/pages/Dashboard')
+const CandidateDashboard = () => import(/* webpackChunkName: 'CandidateDashboard' */ '@/pages/CandidateDashboard')
+import LINKS from '@/utils/constants/links'
 import store from '@/store'
 
 Vue.use(Router)
@@ -25,13 +24,48 @@ export const router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
-      name: 'Home',
+      path: LINKS.HOME.HREF,
+      name: LINKS.HOME.TITLE,
       component: Home
     },
     {
-      path: '/dashboard',
-      name: 'Dashboard',
+      path: LINKS.TERMS_OF_SERVICE.HREF,
+      name: LINKS.TERMS_OF_SERVICE.TITLE,
+      component: TermsOfService,
+    },
+    {
+      path: LINKS.LEARNING.HREF,
+      name: LINKS.LEARNING.TITLE,
+      component: Learning,
+    },
+    {
+      path: LINKS.SUPPORT.HREF,
+      name: LINKS.SUPPORT.TITLE,
+      component: Support,
+    },
+    {
+      path: LINKS.CONTACT_US.HREF,
+      name: LINKS.CONTACT_US.TITLE,
+      component: ContactUs,
+    },
+    {
+      path: LINKS.LOGIN.HREF,
+      name: LINKS.LOGIN.TITLE,
+      component: Login,
+    },
+    {
+      path: LINKS.RESET.HREF,
+      name: LINKS.RESET.TITLE,
+      component: Reset,
+    },
+    {
+      path: LINKS.UPDATE_PASSWORD.HREF,
+      name: LINKS.UPDATE_PASSWORD.TITLE,
+      component: UpdatePassword,
+    },
+    {
+      path: LINKS.DASHBOARD.HREF,
+      name: LINKS.DASHBOARD.TITLE,
       component: Dashboard,
       beforeEnter(to, from, next) {
         if (!store.getters.isAuthenticated) {
@@ -42,68 +76,23 @@ export const router = new Router({
       }
     },
     {
-      path: '/terms',
-      name: 'Terms',
-      component: Terms,
-    },
-    {
-      path: '/learning',
-      name: 'Learning',
-      component: Learning,
-    },
-    {
-      path: '/support',
-      name: 'Support',
-      component: Support,
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: Login,
-    },
-    {
-      path: '/contact',
-      name: 'Contact',
-      component: Contact,
-    },
-    // {
-    //   path: '/evaluator/:org/:year/:email/:uuid',
-    //   name: 'Evaluator',
-    //   component: EvaluatorDashboard,
-    // },
-    {
-      path: '/candidate/:org/:year/:uuid',
-      name: 'Candidate',
+      path: LINKS.CANDIDATE_DASHBOARD.HREF,
+      name: LINKS.CANDIDATE_DASHBOARD.TITLE,
       component: CandidateDashboard,
     },
-    // {
-    //   path: '/register',
-    //   name: 'Register',
-    //   component: Register,
-    // },
     {
-      path: '/applicant',
-      name: 'Applicant',
+      path: LINKS.APPLICANT.HREF,
+      name: LINKS.APPLICANT.TITLE,
       component: Applicant,
     },
     {
-      path: '/reset',
-      name: 'Reset',
-      component: Reset,
-    },
-    {
-      path: '/update/password/:email/:reset_link',
-      name: 'UpdatePassword',
-      component: UpdatePassword,
-    },
-    {
-      path: '/zoomredirect',
-      name: 'ZoomRedirect',
+      path: LINKS.ZOOM_REDIRECT.HREF,
+      name: LINKS.ZOOM_REDIRECT.TITLE,
       component: ZoomRedirect,
     },
     {
-      path: '/zoomdeactivate',
-      name: 'ZoomDeactivate',
+      path: LINKS.ZOOM_DEACTIVATE.HREF,
+      name: LINKS.ZOOM_DEACTIVATE.TITLE,
       component: ZoomDeactivate,
     }
   ]
