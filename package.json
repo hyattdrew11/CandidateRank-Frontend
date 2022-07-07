@@ -22,7 +22,7 @@
     "core-js": "^3.6.5",
     "csv-validator": "0.0.3",
     "element-ui": "^2.13.2",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "moment-range": "^4.0.2",
     "nouislider": "^11.1.0",
     "pdfjs-dist": "^2.4.456",
